@@ -22,7 +22,18 @@ public class Grid {
 	
 	
 	
+	
+	
+	//Special getters&setters
+	public Tile findTileOnCoords(int x, int y) {
+		return worldGrid[y/gridRows*gridColumns + x/gridColumns];
+	}
+	
 	//Getters&Setters
+	public Tile[] getTiles() {
+		return worldGrid;
+	}
+	
 	public int getGridColumns() {
 		return gridColumns;
 	}

@@ -1,24 +1,39 @@
 package handlers;
 
-import com.sun.jdi.Location;
+
+
+import java.awt.Graphics;
+
+import world.Location;
+import world.Tile;
 
 public class Camera {
 	int x, y; 
-	double scale = 1;
+	int width, height;
+	double scale = 1; //TODO: implementovat
 	Location locationObserved;
-	int columnsToRenderBoundaries;
-	int rowsToRenderBoundaries;
+	Tile topLeftTileVisible;
+	Tile botRightTileVisible;
 	
 	
 
 	
 	
-	/*TODO:
-	 * render
-	 * 
-	 * 
-	 * 
-	 */
+	
+	 public void render(Graphics g) {
+		 for(int col = topLeftTileVisible.getColumn(); col < botRightTileVisible.getColumn(); col++){
+	 		for(int row = topLeftTileVisible.getRow(); row < botRightTileVisible.getRow() ;row++){
+	 			locationObserved.getGrid().getTiles()[(row*locationObserved.getGrid().getGridColumns())+col].render(g); 			
+	 		}
+		 }
+	 }
+	
+	
+	private void updateCameraBorders() {
+		topLeftTileVisible = locationObserved.getGrid().findTileOnCoords( x, y);
+		topLeftTileVisible = locationObserved.getGrid().findTileOnCoords( x + width, y + height);
+
+	}
 	
 	//Getters&Setters
 	public int getX() {

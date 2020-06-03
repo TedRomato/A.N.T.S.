@@ -1,5 +1,6 @@
 package world;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import gameObjectClasses.GameObject;
@@ -14,7 +15,7 @@ public class Tile {
 
 	//renderStuff
 	BufferedImage image;
-	int tileCoordX, tileCoordY;
+	int tileRenderCoordX, tileRenderCoordY;
 	
 	public Tile(int column, int row) {
 		this.column = column;
@@ -30,8 +31,12 @@ public class Tile {
 	
 	
 	public void updateRender(Camera camera) {
-		tileCoordX = column*tileSideLenght - camera.getX();
-		tileCoordY = row*tileSideLenght - camera.getY();
+		tileRenderCoordX = column*tileSideLenght - camera.getX();
+		tileRenderCoordY = row*tileSideLenght - camera.getY();
+	}
+	
+	public void render(Graphics g) {
+		g.drawRect(tileRenderCoordX, tileRenderCoordY, tileSideLenght, tileSideLenght);
 	}
 	/*TODO:
 	 * render() ->
@@ -39,7 +44,35 @@ public class Tile {
 	 * tileState REVEALED - render tile texture
 	 * tileState ACTIVE - render tile texture
 	 * 
-	 * fillRect - (column*tileSideLenght - cameraX, row*tileSideLenght - cameraY)
-	 */
+	 */ 
+
+
+	
+	//Getters&Setters
+
+	public int getColumn() {
+		return column;
+	}
+
+
+
+	public void setColumn(int column) {
+		this.column = column;
+	}
+
+
+
+	public int getRow() {
+		return row;
+	}
+
+
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+
+
 	
 }
