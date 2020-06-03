@@ -8,12 +8,17 @@ import world.Location;
 import world.Tile;
 
 public class Camera {
-	int x, y; 
-	int width, height;
+	int x = 0, y = 0; 
+	int width = 1920, height = 1080;
 	double scale = 1; 
 	Location locationObserved;
 	Tile topLeftTileVisible;
 	Tile botRightTileVisible;
+	
+	public Camera(Location loc) {
+		locationObserved = loc;
+		updateCameraBorders();
+	}
 	
 	 public void render(Graphics g) {
 		 for(int col = topLeftTileVisible.getColumn(); col < botRightTileVisible.getColumn(); col++){
@@ -25,8 +30,8 @@ public class Camera {
 	
 	
 	private void updateCameraBorders() {
-		topLeftTileVisible = locationObserved.getGrid().findTileOnCoords( x, y);
-		botRightTileVisible = locationObserved.getGrid().findTileOnCoords( x + width, y + height);
+		topLeftTileVisible = locationObserved.getGrid().findTileOnMouseCoords( x, y, scale);
+		botRightTileVisible = locationObserved.getGrid().findTileOnMouseCoords( x + width, y + height, scale);
 
 	}
 	

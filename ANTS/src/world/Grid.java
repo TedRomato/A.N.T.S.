@@ -21,12 +21,9 @@ public class Grid {
 	
 	
 	
-	
-	
-	
 	//Special getters&setters
-	public Tile findTileOnCoords(int x, int y) {
-		return worldGrid[y/gridRows*gridColumns + x/gridColumns];
+	public Tile findTileOnMouseCoords(int x, int y, double scale) {
+		return worldGrid[(int)(y/(gridRows*scale)*gridColumns + x/(gridColumns*scale))];
 	}
 	
 	//Getters&Setters
