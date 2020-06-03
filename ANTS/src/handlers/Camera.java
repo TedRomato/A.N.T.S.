@@ -10,15 +10,10 @@ import world.Tile;
 public class Camera {
 	int x, y; 
 	int width, height;
-	double scale = 1; //TODO: implementovat
+	double scale = 1; 
 	Location locationObserved;
 	Tile topLeftTileVisible;
 	Tile botRightTileVisible;
-	
-	
-
-	
-	
 	
 	 public void render(Graphics g) {
 		 for(int col = topLeftTileVisible.getColumn(); col < botRightTileVisible.getColumn(); col++){
@@ -31,7 +26,7 @@ public class Camera {
 	
 	private void updateCameraBorders() {
 		topLeftTileVisible = locationObserved.getGrid().findTileOnCoords( x, y);
-		topLeftTileVisible = locationObserved.getGrid().findTileOnCoords( x + width, y + height);
+		botRightTileVisible = locationObserved.getGrid().findTileOnCoords( x + width, y + height);
 
 	}
 	
@@ -50,6 +45,11 @@ public class Camera {
 	
 	public void setY(int y) {
 		this.y = y;
+	}
+
+
+	public double getScale() {
+		return scale;
 	}
 
 }

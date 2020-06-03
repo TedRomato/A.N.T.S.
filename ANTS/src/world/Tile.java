@@ -10,12 +10,13 @@ import handlers.Camera;
 public class Tile {
 	TileState tileState = TileState.HIDDEN;
 	GameObject[] contents = new GameObject[1];
-	final static int tileSideLenght = 10;
+	final static int tileSideLenght = 20;
 	int column, row;
 
 	//renderStuff
 	BufferedImage image;
 	int tileRenderCoordX, tileRenderCoordY;
+	int tileRenderSide = tileSideLenght;
 	
 	public Tile(int column, int row) {
 		this.column = column;
@@ -33,10 +34,11 @@ public class Tile {
 	public void updateRender(Camera camera) {
 		tileRenderCoordX = column*tileSideLenght - camera.getX();
 		tileRenderCoordY = row*tileSideLenght - camera.getY();
+		tileRenderSide = (int)(tileSideLenght/camera.getScale());
 	}
 	
 	public void render(Graphics g) {
-		g.drawRect(tileRenderCoordX, tileRenderCoordY, tileSideLenght, tileSideLenght);
+		g.drawRect(tileRenderCoordX, tileRenderCoordY, tileRenderSide, tileRenderSide);
 	}
 	/*TODO:
 	 * render() ->
