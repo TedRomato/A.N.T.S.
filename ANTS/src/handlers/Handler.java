@@ -1,5 +1,7 @@
 package handlers;
 
-public interface Handler {
+import gameObjectClasses.GameObject;
 
+public interface Handler {
+	public void handle(GameObject[] locationArr);
 }
