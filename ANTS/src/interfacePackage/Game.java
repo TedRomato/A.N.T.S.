@@ -10,6 +10,8 @@ public class Game extends JPanel {
 	boolean GameRunning = true;
 	int ms = 1000;
 	int UPS = 120;
+	int x = 0;
+
 	double msPerUpdate = ms/UPS;
 	public Game() {
 		
@@ -55,6 +57,7 @@ public class Game extends JPanel {
 		// TODO Auto-generated method stub
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		render(g2);
 	}
 }

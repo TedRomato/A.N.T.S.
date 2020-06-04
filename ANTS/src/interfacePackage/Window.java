@@ -39,6 +39,7 @@ public class Window extends JFrame implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		//getting the window to close on the ESC key
 		if(e.getKeyCode() == e.VK_ESCAPE) {
+			game.stop();
 			dispose();
 		}
 	}
