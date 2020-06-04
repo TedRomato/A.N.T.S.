@@ -16,7 +16,8 @@ public class Window extends JFrame implements KeyListener{
 		addKeyListener(this);
 		setVisible(true);
 		game = new Game();
-		add(game);	
+		game.setSize(getWidth(), getHeight()); //GAME NEEDS TO HAVE A SPECIFIED SIZE IF NOT THE PAINT COMPONENT METHOD WILL NOT WORK
+		getContentPane().add(game);	
 		game.start();
 		
 		
@@ -25,7 +26,6 @@ public class Window extends JFrame implements KeyListener{
 	
 	public static void main(String[] args) {
 		new Window();
-		System.out.println("Welcome to ANTS git repo :]");
 	}
 
 
