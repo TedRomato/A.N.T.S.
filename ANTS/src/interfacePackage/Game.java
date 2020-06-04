@@ -6,13 +6,16 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
+import world.Location;
+
 public class Game extends JPanel {
 	boolean GameRunning = true;
 	int ms = 1000;
 	int FPS = 120;
 	double msPerFrame = ms/FPS;
+	Location testLoc;
+	
 	public Game() {
-		
 	}
 	public void start() {
 		while(GameRunning) {
@@ -33,6 +36,7 @@ public class Game extends JPanel {
 	}
 	//render game objects on their updated positions
 	public void render(Graphics2D g2) {
+		
 		
 	}
 	

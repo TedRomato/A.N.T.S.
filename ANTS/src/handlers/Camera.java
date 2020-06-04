@@ -1,8 +1,6 @@
 package handlers;
 
-
-
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import world.Location;
 import world.Tile;
@@ -20,7 +18,7 @@ public class Camera {
 		updateCameraBorders();
 	}
 	
-	 public void render(Graphics g) {
+	 public void render(Graphics2D g) {
 		 for(int col = topLeftTileVisible.getColumn(); col < botRightTileVisible.getColumn(); col++){
 	 		for(int row = topLeftTileVisible.getRow(); row < botRightTileVisible.getRow() ;row++){
 	 			locationObserved.getGrid().getTiles()[(row*locationObserved.getGrid().getGridColumns())+col].render(g); 			

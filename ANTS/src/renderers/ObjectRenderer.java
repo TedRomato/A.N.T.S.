@@ -1,18 +1,15 @@
-package handlers;
+package renderers;
 
-import java.awt.Graphics;
 
 import gameObjectClasses.GameObject;
 
-public class RenderHandler implements Handler{
-	HandlerArray renderArr;
-	Graphics g;
-
-	public RenderHandler(int maxLen) {
-		renderArr = new HandlerArray(maxLen);
-	}
+public class ObjectRenderer extends Renderer{
 	
-	@Override
+	
+	public ObjectRenderer(int maxLen) {
+		super(maxLen);
+	}
+
 	public void handle(GameObject[] locationArr) {
 		int itemsHandled = 0;
 		for(int i = 0; i < renderArr.getArr().length; i++) {
@@ -31,16 +28,5 @@ public class RenderHandler implements Handler{
 			}
 		}
 	}
-	
-	public void addToRenderArray(int index) {
-		renderArr.addToHandlerArr(index);
-	}
-
-
-	
-	
-	
-	
-	
-	
+		
 }

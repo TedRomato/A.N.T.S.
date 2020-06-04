@@ -1,12 +1,19 @@
 package world;
 
+import java.awt.Graphics2D;
+
 import gameObjectClasses.GameObject;
+import renderers.TileRenderer;
 
 public class Location {
 	GameObject[] objectsInLocation = new GameObject[500];
 	Grid grid;
 	boolean isActive = false;
+	TileRenderer tileRenderer;
 	
+	public Location() {
+		grid = new Grid(20,20);
+	}
 	
 	public Grid getGrid() {
 		return grid;
@@ -22,5 +29,9 @@ public class Location {
 		System.out.println("objectsInLocation overflow");
 	}
 	
+	public void render(Graphics2D g) {
+
+		tileRenderer.handle(grid, g);
+	}
 	
 }

@@ -1,10 +1,10 @@
 package handlers;
 
-public class HandlerArray {
+public class ContentArray {
 	int[] arr;
 	int contents = 0;
 	
-	public HandlerArray(int maxLen) {
+	public ContentArray(int maxLen) {
 		initializeArray(maxLen);
 	}
 	

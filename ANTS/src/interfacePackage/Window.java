@@ -25,7 +25,6 @@ public class Window extends JFrame implements KeyListener{
 	
 	public static void main(String[] args) {
 		new Window();
-		System.out.println("Welcome to ANTS git repo :]");
 	}
 
 

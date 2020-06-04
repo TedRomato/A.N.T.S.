@@ -1,7 +1,7 @@
 package handlers;
 
-import gameObjectClasses.GameObject;
+import world.Location;
 
 public interface Handler {
-	public void handle(GameObject[] locationArr);
+	public void handle(Location loc);
 }

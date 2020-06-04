@@ -1,6 +1,6 @@
 package world;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import gameObjectClasses.GameObject;
@@ -37,7 +37,7 @@ public class Tile {
 		tileRenderSide = (int)(tileSideLenght/camera.getScale());
 	}
 	
-	public void render(Graphics g) {
+	public void render(Graphics2D g) {
 		g.drawRect(tileRenderCoordX, tileRenderCoordY, tileRenderSide, tileRenderSide);
 	}
 	/*TODO:
