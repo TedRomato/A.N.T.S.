@@ -9,23 +9,36 @@ import javax.swing.JPanel;
 public class Game extends JPanel {
 	boolean GameRunning = true;
 	int ms = 1000;
-	int FPS = 120;
-	double msPerFrame = ms/FPS;
+	int UPS = 120;
+	double msPerUpdate = ms/UPS;
 	public Game() {
 		
 	}
 	public void start() {
+		double previous = System.currentTimeMillis();
+		double delta = 0;
 		while(GameRunning) {
 			double now = System.currentTimeMillis();
-			tick();
-			repaint();//calls the paint component method
-			try {
+			double elapsed = now - previous;
+			previous = now;
+			delta += elapsed;
+			
+			while(delta>=msPerUpdate) {
+				tick();
+				delta-=msPerUpdate;
+			}
+			/*try {
 				//wait for a specific amount of time to make sure the game isn´t to fast
 				Thread.sleep((long)(now + msPerFrame - System.currentTimeMillis()));
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}
+			}*/
+			
+			repaint();//calls the paint component method
 		}
+	}
+	public void stop() {
+		GameRunning = false;
 	}
 	//update game values and positions
 	public void tick(){
