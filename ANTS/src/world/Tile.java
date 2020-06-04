@@ -38,6 +38,7 @@ public class Tile {
 	}
 	
 	public void render(Graphics2D g) {
+		System.out.println("TILE");
 		g.drawRect(tileRenderCoordX, tileRenderCoordY, tileRenderSide, tileRenderSide);
 	}
 	/*TODO:

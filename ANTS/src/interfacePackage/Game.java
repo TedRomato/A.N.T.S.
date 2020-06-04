@@ -6,29 +6,50 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
+import gameObjectClasses.GameObject;
+import gameObjectClasses.Pile;
+import world.Grid;
 import world.Location;
+import world.Tile;
 
 public class Game extends JPanel {
 	boolean GameRunning = true;
 	int ms = 1000;
-	int FPS = 120;
-	double msPerFrame = ms/FPS;
-	Location testLoc;
+
+	int UPS = 10;
+	double msPerUpdate = ms/UPS;
+	
+	Tile t;
 	
 	public Game() {
+		t = new Tile(1,1);
 	}
+	
 	public void start() {
+		double previous = System.currentTimeMillis();
+		double delta = 0;
 		while(GameRunning) {
 			double now = System.currentTimeMillis();
-			tick();
-			repaint();//calls the paint component method
-			try {
+			double elapsed = now - previous;
+			previous = now;
+			delta += elapsed;
+			
+			while(delta>=msPerUpdate) {
+				tick();
+				delta-=msPerUpdate;
+			}
+			/*try {
 				//wait for a specific amount of time to make sure the game isn´t to fast
 				Thread.sleep((long)(now + msPerFrame - System.currentTimeMillis()));
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}
+			}*/
+			
+			repaint();//calls the paint component method
 		}
+	}
+	public void stop() {
+		GameRunning = false;
 	}
 	//update game values and positions
 	public void tick(){
@@ -36,8 +57,9 @@ public class Game extends JPanel {
 	}
 	//render game objects on their updated positions
 	public void render(Graphics2D g2) {
-		
-		
+		System.out.println("RENDER");
+		t.render(g2);
+	//	g2.drawRect(5, 5, 50, 50);
 	}
 	
 	@Override

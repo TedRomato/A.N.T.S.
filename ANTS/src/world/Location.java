@@ -13,6 +13,7 @@ public class Location {
 	
 	public Location() {
 		grid = new Grid(20,20);
+		tileRenderer = new TileRenderer(100);
 	}
 	
 	public Grid getGrid() {
@@ -30,7 +31,6 @@ public class Location {
 	}
 	
 	public void render(Graphics2D g) {
-
 		tileRenderer.handle(grid, g);
 	}
 	

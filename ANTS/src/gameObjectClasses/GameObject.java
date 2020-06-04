@@ -8,6 +8,7 @@ public abstract class GameObject {
 	int currentSpritePointer = 0;
 	int locationPointer = 0;
 	
+	
 	public abstract void render(Graphics g);
 	
 }

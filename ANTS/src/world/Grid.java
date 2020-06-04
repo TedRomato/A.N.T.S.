@@ -20,7 +20,6 @@ public class Grid {
 	}
 	
 	
-	
 	//Special getters&setters
 	public Tile findTileOnMouseCoords(int x, int y, double scale) {
 		return worldGrid[(int)(y/(gridRows*scale)*gridColumns + x/(gridColumns*scale))];

@@ -2,9 +2,7 @@ package renderers;
 
 import java.awt.Graphics2D;
 
-import gameObjectClasses.GameObject;
 import world.Grid;
-import world.Location;
 
 public class TileRenderer extends Renderer{
 
