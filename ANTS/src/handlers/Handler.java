@@ -1,5 +1,7 @@
 package handlers;
 
-public interface Handler {
+import world.Location;
 
+public interface Handler {
+	public void handle(Location loc);
 }
