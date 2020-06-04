@@ -13,7 +13,7 @@ public class Item extends GridSnappingObject{
 	State currentState = State.Laying;
 	
 	@Override
-	void render(Graphics g) {
+	public void render(Graphics g) {
 		switch(currentState) {
 			case Laying:
 				//render image

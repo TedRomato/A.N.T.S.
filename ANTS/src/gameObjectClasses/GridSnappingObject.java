@@ -7,7 +7,7 @@ public abstract class GridSnappingObject extends GameObject{
 	int[] shape;
 
 	@Override
-	void render(Graphics g) {
+	public void render(Graphics g) {
 		
 	}
 
