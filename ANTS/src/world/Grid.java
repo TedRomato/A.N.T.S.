@@ -1,5 +1,9 @@
 package world;
 
+import java.awt.Color;
+
+import handlers.Camera;
+
 public class Grid {
 	private int gridColumns, gridRows;
 	private int mapSize;
@@ -14,15 +18,33 @@ public class Grid {
 	}
 
 	protected void constructGrid() {
-		for(int i = 0; i < mapSize; i++) {
-			worldGrid[i] = new Tile((i/gridRows), i - (i/gridRows) );
+		for(int r = 0; r < gridColumns; r++) {
+			for(int c = 0; c < gridRows; c++) {
+				worldGrid[r*gridColumns + c] = new Tile(c, r);
+			}
+		}
+	}
+	
+	public void printTileCoords() {
+		for(Tile t : worldGrid) {
+			t.printCoords();
 		}
 	}
 	
 	
 	//Special getters&setters
-	public Tile findTileOnMouseCoords(int x, int y, double scale) {
-		return worldGrid[(int)(y/(gridRows*scale)*gridColumns + x/(gridColumns*scale))];
+	public Tile findTileOnMouseCoords(int x, int y, Camera camera) {
+		int index = (int)(y/(int)(Tile.tileSideLenght*camera.getScale())*gridColumns) 
+				+	(int)(x/(int)(Tile.tileSideLenght*camera.getScale()));
+		System.out.println("index : " + index);
+		if(index > 0 && index < worldGrid.length) {
+			System.out.println("column : " + worldGrid[index].getColumn() + " row : " + worldGrid[index].getRow());
+			return worldGrid[index];
+			
+		}
+		System.out.println("null");
+
+		return null;
 	}
 	
 	//Getters&Setters
