@@ -1,5 +1,6 @@
 package interfacePackage;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -8,6 +9,8 @@ import javax.swing.JPanel;
 
 import gameObjectClasses.GameObject;
 import gameObjectClasses.Pile;
+import gameObjectClasses.Tree;
+import handlers.Camera;
 import world.Grid;
 import world.Location;
 import world.Tile;
@@ -15,17 +18,39 @@ import world.Tile;
 public class Game extends JPanel {
 	boolean GameRunning = true;
 	int ms = 1000;
-
-	int UPS = 10;
+	int UPS = 120;
+	int x = 0;
 	double msPerUpdate = ms/UPS;
 	
-	Tile t;
+	int contentPanelWidth;
+	int contentPanelHeight;
 	
-	public Game() {
-		t = new Tile(1,1);
+	public static double screenRatio;
+	
+	Camera camera;
+
+	Grid grid;
+	Tile t;
+	Location l;
+	
+	public Game(int screenWidth, int screenHeight) {
+		setLayout(null);
+
+		contentPanelWidth = screenWidth;
+		contentPanelHeight = screenHeight;
+		Game.screenRatio = (double)contentPanelWidth/1920;
+		System.out.println(Game.screenRatio);
+		Tile.tileSideLenght = (int) Math.round(40*Game.screenRatio);
+		Tile.tilePossibleSizeRange = new int[] {(int) Math.round(Tile.tileSideLenght*0.4),(int) Math.round(Tile.tileSideLenght*1.6)};
+
+		l = new Location();
+		camera = new Camera(l, screenWidth, screenHeight);
+		camera.updateCameraBorders();
+		
 	}
 	
 	public void start() {
+		System.out.println("Started");
 		double previous = System.currentTimeMillis();
 		double delta = 0;
 		while(GameRunning) {
@@ -37,6 +62,7 @@ public class Game extends JPanel {
 			while(delta>=msPerUpdate) {
 				tick();
 				delta-=msPerUpdate;
+
 			}
 			/*try {
 				//wait for a specific amount of time to make sure the game isn´t to fast
@@ -44,30 +70,33 @@ public class Game extends JPanel {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}*/
-			
-			repaint();//calls the paint component method
+			/*this.repaint();*///calls the paint component method
+			this.repaint();
+
+
 		}
 	}
 	public void stop() {
 		GameRunning = false;
 	}
-	//update game values and positions
+	//	update game values and positions
 	public void tick(){
-		
+	
 	}
 	//render game objects on their updated positions
 	public void render(Graphics2D g2) {
-		System.out.println("RENDER");
-		t.render(g2);
-	//	g2.drawRect(5, 5, 50, 50);
+		//System.out.println("RENDER");
+		camera.renderMap(g2);
+
+	
 	}
 	
-	@Override
 	//paints the actual game objects from the render method
+	@Override
 	protected void paintComponent(Graphics g) {
-		// TODO Auto-generated method stub
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		render(g2);
 	}
 }

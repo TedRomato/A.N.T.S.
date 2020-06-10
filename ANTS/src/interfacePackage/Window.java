@@ -1,4 +1,6 @@
 package interfacePackage;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -15,8 +17,16 @@ public class Window extends JFrame implements KeyListener{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		addKeyListener(this);
 		setVisible(true);
-		game = new Game();
-		add(game);	
+		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int screenHeight = screenSize.height;
+		int screenWidth = screenSize.width;
+		
+		
+		game = new Game(screenWidth, screenHeight);
+		game.setSize(getWidth(), getHeight()); //GAME NEEDS TO HAVE A SPECIFIED SIZE IF NOT THE PAINT COMPONENT METHOD WILL NOT WORK
+		getContentPane().add(game);	
+		
 		game.start();
 		
 		
@@ -38,6 +48,7 @@ public class Window extends JFrame implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		//getting the window to close on the ESC key
 		if(e.getKeyCode() == e.VK_ESCAPE) {
+			game.stop();
 			dispose();
 		}
 	}
