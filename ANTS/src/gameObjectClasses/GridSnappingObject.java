@@ -16,7 +16,7 @@ public abstract class GridSnappingObject extends GameObject{
 	
 	@Override
 	public void render(Graphics g, Camera c) {
-		
+//		g.drawImage(sprites[]currentSpritePointer, x, y, width, height, null);
 	}
 	
 	

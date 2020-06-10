@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import handlers.Animated;
+import handlers.Camera;
 import world.Grid;
 
 public class Tree extends SolidObject implements Animated{
@@ -21,6 +22,7 @@ public class Tree extends SolidObject implements Animated{
 		setOccupiedTiles(g);
 		
 		sprites = new BufferedImage[3];
+		
 		try {
 			sprites[0] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree1.png"));
 			sprites[1] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree2.png"));
@@ -46,5 +48,9 @@ public class Tree extends SolidObject implements Animated{
 		if(animationTimer > 100) {
 			animationTimer = 0;
 		}
+	}
+	
+	public void render(Graphics g,Camera c) {
+	//	g.drawImage(, x, y, null);
 	}
 }
