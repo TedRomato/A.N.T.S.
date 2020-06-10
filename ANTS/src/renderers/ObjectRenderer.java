@@ -20,7 +20,7 @@ public class ObjectRenderer extends Renderer{
 				if(locationArr[renderArr.getArr()[i]] == null) {
 					renderArr.removeFromArray(i);;
 				}else {
-					locationArr[renderArr.getArr()[i]].render(g2);
+				//	locationArr[renderArr.getArr()[i]].render(g2);
 					itemsHandled++;
 				}
 				

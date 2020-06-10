@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-import interfacePackage.Game;
 import world.Location;
 import world.Tile;
 
@@ -36,6 +35,7 @@ public class Camera {
 
 	
 	public Camera(Location loc, int width, int height) {
+		
 		this.width = width;
 		this.height = height;
 		maxDistanceFromBorderY = height/2;
@@ -51,17 +51,44 @@ public class Camera {
 
 	}
 	
-	public void renderTiles(Graphics2D g) {
+	public void renderMap(Graphics2D g) {
 		 g.drawImage(bg, 0 - x, 0 - y, (int) (locationObserved.getGrid().getGridColumns()*tileRenderSize), (int)(locationObserved.getGrid().getGridRows()*tileRenderSize), null);
 
-		 for(int col = leftMostRenderColumn; col < rightMostRenderColumn; col++){
+		 //render grid
+		/* for(int col = leftMostRenderColumn; col < rightMostRenderColumn; col++){
 			 for(int row = topMostRenderRow; row < botMostRenderRow;row++){
 				 locationObserved.getGrid().getTiles()[(row*locationObserved.getGrid().getGridColumns())+col].render(g); 	
 			 }
-		 }
-		 
+		 }*/
 	}
 	
+	public void renderGridSnappingObjects(Graphics2D g) {
+		int objectsHandled = 0;
+		for(int i = 0; i < locationObserved.gridSnappingObjects.getArr().length; i++) {
+			if(locationObserved.gridSnappingObjects.getArr()[i] != -1) {
+				
+				locationObserved.objectsInLocation[locationObserved.gridSnappingObjects.getArr()[i]].render(g, this);
+				
+				if(objectsHandled >= locationObserved.gridSnappingObjects.getContents()) {
+					return;
+				}
+			}
+		}
+	}
+	
+	
+	public void move(int x, int y) {
+		if(moveInRange(this.y+y,locationObserved.getGrid().getGridRows()*tileRenderSize, maxDistanceFromBorderY)) {
+			this.y += y;
+		}
+		if(moveInRange(this.x+x,locationObserved.getGrid().getGridColumns()*tileRenderSize, maxDistanceFromBorderX)) {
+			this.x += x;
+		}
+		updateCameraBorders();
+		setTileRender();
+
+	}
+		
 	
 	public void updateCameraBorders() {
 
@@ -72,8 +99,24 @@ public class Camera {
 		checkAndFixCameraBorders();
 		
 	}
+	//used for testing or initial set
+	public void zoom(double d) {
+		if(scale + d > zoomRange[0] && scale + d < zoomRange[1]) {
+			scale += d;
+			updateTileScale();		
+
+		}
+	}
 	
-	public void checkAndFixCameraBorders() {
+	public void smoothZoom(double d){
+		zoom(smoothOutZoom(d));
+	}
+	
+	public void handleCameraMoving(int x, int y) {
+		cameraMover.handleCameraMovement(x, y, this);
+	}
+	
+	private void checkAndFixCameraBorders() {
 		if(leftMostRenderColumn < 0) {
 			leftMostRenderColumn = 0;
 		}
@@ -89,7 +132,7 @@ public class Camera {
 		
 	}
 	
-	public void setTileRender() {	
+	private void setTileRender() {	
 		for(int col = leftMostRenderColumn; col < rightMostRenderColumn; col++){
 			for(int row = topMostRenderRow; row < botMostRenderRow;row++){
 	 			locationObserved.getGrid().getTiles()[(row*locationObserved.getGrid().getGridColumns())+col].updateRender(this);; 			
@@ -98,20 +141,7 @@ public class Camera {
 	}
 	
 	
-	
-	public void move(int x, int y) {
-		if(moveInRange(this.y+y,locationObserved.getGrid().getGridRows()*tileRenderSize, maxDistanceFromBorderY)) {
-			this.y += y;
-		}
-		if(moveInRange(this.x+x,locationObserved.getGrid().getGridColumns()*tileRenderSize, maxDistanceFromBorderX)) {
-			this.x += x;
-		}
-		updateCameraBorders();
-		setTileRender();
-
-	}
-	
-	public boolean moveInRange(int newCoord, int size, int maxDistanceFromBorder) {
+	private boolean moveInRange(int newCoord, int size, int maxDistanceFromBorder) {
 		if(newCoord > size - maxDistanceFromBorder) {
 			return false;
 		}else if(newCoord < 0 - maxDistanceFromBorder){
@@ -121,21 +151,17 @@ public class Camera {
 	}
 	
 	
-	public boolean updateTileScale() {
+	private boolean updateTileScale() {
 		for(int i = - chunkAmount/2; i < chunkAmount; i++) {
 			if(i != currentChunk) {
 				if(scale > (i)*scaleChunk && scale < (i+1)*scaleChunk) {
 					int former = tileRenderSize;
 					tileRenderSize = Tile.tileSideLenght + i;
 					currentChunk = i;
-					System.out.println("--------------");
-					System.out.println(leftMostRenderColumn);
 					adjustAfterScale(former);
 					updateCameraBorders();
 					move(getZoomDifference(former,tileRenderSize, width)/2,getZoomDifference(former,tileRenderSize, height)/2);
-					System.out.println(leftMostRenderColumn);
 					setTileRender();
-					System.out.println(leftMostRenderColumn);
 					return true;
 				}
 			}	
@@ -143,7 +169,7 @@ public class Camera {
 		return false;
 	}
 	
-	public void adjustAfterScale(int formerTileRenderSize) {
+	private void adjustAfterScale(int formerTileRenderSize) {
 		double i = (double)x / (double)formerTileRenderSize;
 		x = (int) Math.round(i * (double)tileRenderSize);
 		i = (double)y / (double)formerTileRenderSize;
@@ -151,17 +177,19 @@ public class Camera {
 		
 	}
 	
-	public void zoom(double d) {
-		if(scale + d > zoomRange[0] && scale + d < zoomRange[1]) {
-			scale += d;
-			updateTileScale();		
-
+	
+	private double smoothOutZoom(double zoom) {
+		if(scale < -0.33) {
+			return zoom/2.4;
+		}else if(scale < 0.33) {
+			return zoom/1.5;
+		}else {
+			return zoom;
 		}
 	}
 	
-	//TODO fixnout zoom difference zoomovaani doprostred nefunguje at all
 	
-	public int getZoomDifference(int formerSize, int currentSize, int range) {
+	private int getZoomDifference(int formerSize, int currentSize, int range) {
 
 		double lastScaleWidth = range/(double)(formerSize);
 		double newScaleWidth = range/(double)(currentSize);
@@ -179,9 +207,7 @@ public class Camera {
     }
 	
 	
-	public void handleCameraMoving(int x, int y) {
-		cameraMover.handleCameraMovement(x, y, this);
-	}
+	
 	
 	//Getters&Setters
 	public int getX() {
