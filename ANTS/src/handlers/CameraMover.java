@@ -15,7 +15,7 @@ public class CameraMover {
 	}
 	
 	public void handleCameraMovement(int x, int y, Camera c) {
-		int speed = 1;
+		int speed = 7;
 		int moveX = 0; int moveY = 0;
 		if(top.checkIfMouseIn(x,y)){ 
 			moveY = -speed;
