@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import gameObjectClasses.GameObject;
 import gameObjectClasses.Pile;
 import handlers.Input;
+import handlers.Camera;
 import world.Grid;
 import world.Location;
 import world.Tile;
@@ -24,23 +25,43 @@ import world.Tile;
 public class Game extends JPanel implements MouseListener, MouseWheelListener, MouseMotionListener{
 	boolean GameRunning = true;
 	int ms = 1000;
-	int UPS = 120;
+	int UPS = 60;
 	int x = 0;
 	double msPerUpdate = ms/UPS;
 	
 	Input input = new Input();
+
+	int contentPanelWidth;
+	int contentPanelHeight;
+	
+	public static double screenRatio;
+	
+	Camera camera;
+
 	Grid grid;
 	Tile t;
 	Location l;
 	
-	public Game() {
+	public Game(int screenWidth, int screenHeight) {
 		setLayout(null);
 		addMouseWheelListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		grid = new Grid(20,20);
 		t= new Tile(50,50);
+		
+		contentPanelWidth = screenWidth;
+		contentPanelHeight = screenHeight;
+		Game.screenRatio = (double)contentPanelWidth/1920;
+		System.out.println(Game.screenRatio);
+		Tile.tileSideLenght = (int) Math.round(40*Game.screenRatio);
+		Tile.tilePossibleSizeRange = new int[] {(int) Math.round(Tile.tileSideLenght*0.6),(int) Math.round(Tile.tileSideLenght*1.4)};
+
 		l = new Location();
+		camera = new Camera(l, screenWidth, screenHeight);
+		camera.updateCameraBorders();
+
+		
 	}
 	
 	public void start() {
@@ -56,28 +77,27 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 			while(delta>=msPerUpdate) {
 				tick();
 				delta-=msPerUpdate;
+
 			}
-			/*try {
-				//wait for a specific amount of time to make sure the game isn´t to fast
-				Thread.sleep((long)(now + msPerFrame - System.currentTimeMillis()));
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}*/
+
 			this.repaint();//calls the paint component method
+
 		}
 	}
 	public void stop() {
 		GameRunning = false;
 	}
-	//update game values and positions
+	//	update game values and positions
 	public void tick(){
-		//System.out.println("Ticked");
+		camera.zoom(-0.002);
+	//	camera.move(3, 3);
+	//	camera.handleCameraMoving(/*mouseInputX, mouseInputY*/);
+	//	System.out.println("Ticked");
 	}
 	//render game objects on their updated positions
 	public void render(Graphics2D g2) {
 		//System.out.println("RENDER");
-
-		l.render(g2);
+		camera.renderTiles(g2);
 
 	
 	}
