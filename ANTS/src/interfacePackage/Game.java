@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import gameObjectClasses.GameObject;
 import gameObjectClasses.Pile;
+import gameObjectClasses.Tree;
 import handlers.Camera;
 import world.Grid;
 import world.Location;
@@ -17,7 +18,7 @@ import world.Tile;
 public class Game extends JPanel {
 	boolean GameRunning = true;
 	int ms = 1000;
-	int UPS = 60;
+	int UPS = 120;
 	int x = 0;
 	double msPerUpdate = ms/UPS;
 	
@@ -40,12 +41,11 @@ public class Game extends JPanel {
 		Game.screenRatio = (double)contentPanelWidth/1920;
 		System.out.println(Game.screenRatio);
 		Tile.tileSideLenght = (int) Math.round(40*Game.screenRatio);
-		Tile.tilePossibleSizeRange = new int[] {(int) Math.round(Tile.tileSideLenght*0.6),(int) Math.round(Tile.tileSideLenght*1.4)};
+		Tile.tilePossibleSizeRange = new int[] {(int) Math.round(Tile.tileSideLenght*0.4),(int) Math.round(Tile.tileSideLenght*1.6)};
 
 		l = new Location();
 		camera = new Camera(l, screenWidth, screenHeight);
 		camera.updateCameraBorders();
-
 		
 	}
 	
@@ -81,15 +81,12 @@ public class Game extends JPanel {
 	}
 	//	update game values and positions
 	public void tick(){
-		camera.zoom(-0.002);
-	//	camera.move(3, 3);
-	//	camera.handleCameraMoving(/*mouseInputX, mouseInputY*/);
-	//	System.out.println("Ticked");
+	
 	}
 	//render game objects on their updated positions
 	public void render(Graphics2D g2) {
 		//System.out.println("RENDER");
-		camera.renderTiles(g2);
+		camera.renderMap(g2);
 
 	
 	}
