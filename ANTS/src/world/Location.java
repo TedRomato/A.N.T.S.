@@ -31,7 +31,7 @@ public class Location {
 		addObToLocation(t2);
 
 		try {
-			bg = ImageIO.read(new File("ANTS/src/bg/bgTry.png"));
+			bg = ImageIO.read(new File("ANTS/src/bg/Background.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
