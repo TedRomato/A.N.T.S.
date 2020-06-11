@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import handlers.Camera;
 import world.Grid;
+import world.Tile;
 
 public abstract class GridSnappingObject extends GameObject{
 	int baseTile;
@@ -25,9 +26,10 @@ public abstract class GridSnappingObject extends GameObject{
 	@Override
 	public void render(Graphics g, Camera c) {
 		g.drawImage(sprites[currentSpritePointer], 
-				(baseTile - (baseTile/c.getGrid().getGridColumns())*c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getX() + imageBaseTileOffsetX, 
-				(baseTile/c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getY() + imageBaseTileOffsetY,
-				imageWidth, imageHeight, null);
+				(baseTile - (baseTile/c.getGrid().getGridColumns())*c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getX() + (int)Math.round(imageBaseTileOffsetX*((double)c.getTileRenderSize())/(double)Tile.tileSideLenght), 
+				(baseTile/c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getY() + (int)Math.round(imageBaseTileOffsetY*((double)c.getTileRenderSize())/(double)Tile.tileSideLenght),
+				(int)Math.round((double)(imageWidth*c.getTileRenderSize())/(double)Tile.tileSideLenght), 
+				(int)Math.round((double)(imageHeight*c.getTileRenderSize())/(double)Tile.tileSideLenght), null);
 	}
 	
 	@Override

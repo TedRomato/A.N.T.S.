@@ -20,7 +20,7 @@ public class Tile {
 	int column, row;
 
 	//renderStuff
-	Color colorUsed = Color.WHITE;
+	Color colorUsed = Color.BLACK;
 	BufferedImage image;
 	int tileRenderCoordX, tileRenderCoordY;
 	int tileRenderSide = tileSideLenght;
@@ -59,7 +59,7 @@ public class Tile {
 		
 		if(colorUsed != Color.WHITE) {
 			g.setColor(colorUsed);
-			g.drawRect(tileRenderCoordX, tileRenderCoordY, tileRenderSide, tileRenderSide);
+			g.fillRect(tileRenderCoordX + tileRenderSide/2, tileRenderCoordY + tileRenderSide/2, tileRenderSide/2-1, tileRenderSide/2-1);
 		}
 		
 

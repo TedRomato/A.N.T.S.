@@ -100,12 +100,9 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 	//render game objects on their updated positions
 	public void render(Graphics2D g2) {
 		//System.out.println("RENDER");		
-		camera.renderMap(g2);
+		camera.renderBackground(g2);
 		camera.renderGridSnappingObjects(g2);
-
-
-
-
+		camera.renderGrid(g2);
 	
 	}
 	//paints the actual game objects from the render method
