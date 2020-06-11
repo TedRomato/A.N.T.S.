@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import handlers.Input.WheelMove;
+import interfacePackage.Game;
 import world.Location;
 import world.Tile;
 
@@ -23,7 +25,7 @@ public class Camera {
 	BufferedImage bg;
 	
 	CameraMover cameraMover;
-
+ 
 	//TODO : zoomovaani doprostred
 	int leftMostRenderColumn;
 	int rightMostRenderColumn;
@@ -104,12 +106,13 @@ public class Camera {
 		if(scale + d > zoomRange[0] && scale + d < zoomRange[1]) {
 			scale += d;
 			updateTileScale();		
-
 		}
 	}
 	
 	public void smoothZoom(double d){
 		zoom(smoothOutZoom(d));
+		
+		
 	}
 	
 	public void handleCameraMoving(int x, int y) {
