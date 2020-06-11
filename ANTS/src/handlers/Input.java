@@ -6,7 +6,7 @@ public class Input {
 	boolean leftMousePressed = false;
 	boolean rightMousePressed = false;
 	int CursorX, CursorY;
-	enum WheelMove{DOWN,UP}
+	public enum WheelMove{DOWN,NONE,UP}
 	WheelMove move;
 	
 	public boolean checkIfKeyPressed(char key) {
@@ -46,12 +46,24 @@ public class Input {
 			}
 		}
 	}
+	public double WheelMoveForAmount(double d) {
+		if(move == WheelMove.UP) {
+			return -d;
+		}
+		if(move == WheelMove.DOWN) {
+			return d;
+		}
+		return 0;
+	}
 	public void checkMouseWheelMove(int notches){
-		if(notches > 0) {
+		if(notches > 0 ) {
 			move = WheelMove.UP;
 		}
-		if(notches < 0) {
+		if(notches < 0 ) {
 			move = WheelMove.DOWN;
+		}
+		if(notches == 0) {
+			move = WheelMove.NONE;
 		}
 	}
 	
