@@ -13,6 +13,16 @@ import gameObjectClasses.Tree;
 import handlers.Animated;
 import handlers.ContentArray;
 
+//Location is set of gameObjects and grid
+//Location is part of world
+//You can add new Gameobjects to location, and make them 
+//do stuff they are supposed to do an interact with other
+//game objects
+
+//Every location has one main array with all of its game objects
+//It has several other Content Array (check out ContentArray for exp.)
+
+
 public class Location {
 	public GameObject[] objectsInLocation = new GameObject[500];
 	public ContentArray gridSnappingObjects;
