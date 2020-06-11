@@ -7,7 +7,7 @@ public class CameraMover {
 	MouseLocationTrigger right;
 	
 	public CameraMover(int screenWidth, int screenHeight) {
-		int stripWidth = screenWidth/16;
+		int stripWidth = screenWidth/64;
 		top   = new MouseLocationTrigger(0,0,screenWidth,stripWidth);
 		bot   = new MouseLocationTrigger(0,screenHeight - stripWidth,screenWidth,stripWidth);
 		left  = new MouseLocationTrigger(0, 0, stripWidth, screenHeight);
@@ -15,7 +15,7 @@ public class CameraMover {
 	}
 	
 	public void handleCameraMovement(int x, int y, Camera c) {
-		int speed = 1;
+		int speed = 7;
 		int moveX = 0; int moveY = 0;
 		if(top.checkIfMouseIn(x,y)){ 
 			moveY = -speed;

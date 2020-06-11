@@ -51,11 +51,12 @@ public class Window extends JFrame implements KeyListener{
 			game.stop();
 			dispose();
 		}
+		game.keyPressed(e);
 	}
 
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+		game.keyReleased(e);
 	}
 }
