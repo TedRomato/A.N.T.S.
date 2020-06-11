@@ -1,5 +1,14 @@
 package handlers;
 
+//use: stores indexes of any contents. 
+//why? This special array knows how many contents it contains
+//-> fast iteration. You can stop Iterating as soon as you go 
+//through amount of objects == ContentArray.contents
+//you can stop iterating
+//smart adding - > every time you add something you add 
+//something it is placed closest free place from index 0
+
+
 public class ContentArray {
 	int[] arr;
 	int contents = 0;
