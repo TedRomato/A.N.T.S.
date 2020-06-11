@@ -56,7 +56,7 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 		contentPanelHeight = screenHeight;
 		Game.screenRatio = (double)contentPanelWidth/1920;
 		System.out.println(Game.screenRatio);
-		Tile.tileSideLenght = (int) Math.round(40*Game.screenRatio);
+		Tile.tileSideLenght = (int) Math.round(60*Game.screenRatio);
 
 		Tile.tilePossibleSizeRange = new int[] {(int) Math.round(Tile.tileSideLenght*0.4),(int) Math.round(Tile.tileSideLenght*1.6)};
 
@@ -102,7 +102,9 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 		//System.out.println("RENDER");		
 		camera.renderBackground(g2);
 		camera.renderGridSnappingObjects(g2);
-		camera.renderGrid(g2);
+		if(input.checkIfKeyPressed('g')) {
+			camera.renderGrid(g2);
+		}
 	
 	}
 	//paints the actual game objects from the render method
