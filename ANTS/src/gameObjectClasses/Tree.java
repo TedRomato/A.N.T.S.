@@ -17,7 +17,8 @@ public class Tree extends SolidObject implements Animated{
 	public Tree(int baseTile, Grid g) {
 		this.baseTile = baseTile;
 		
-		makeShape("0,0;-1,0;0,-1;1,0;0,1;");
+		makeShape("0,0;-1,0;0,-1;1,0;0,1;-1,-1;1,1;1,-1;-1,1;-2,-1;-2,0;-2,1;2,-1;2,0;2,1;-1,2;0,2;1,2;-3,0;3,0;0,3;-1,-2;0,-2;1,-2;0,-3;");
+
 		
 		setOccupiedTiles(g);
 		
@@ -50,7 +51,5 @@ public class Tree extends SolidObject implements Animated{
 		}
 	}
 	
-	public void render(Graphics g,Camera c) {
-	//	g.drawImage(, x, y, null);
-	}
+	
 }

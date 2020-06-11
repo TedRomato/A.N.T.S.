@@ -14,13 +14,13 @@ import interfacePackage.Game;
 
 public class Tile {
 	TileState tileState = TileState.HIDDEN;
-	GameObject[] contents = new GameObject[1];
+	int content = -1;
 	public static int tileSideLenght;
 	public static int[] tilePossibleSizeRange;
 	int column, row;
 
 	//renderStuff
-	Color colorUsed = Color.black;
+	Color colorUsed = Color.WHITE;
 	BufferedImage image;
 	int tileRenderCoordX, tileRenderCoordY;
 	int tileRenderSide = tileSideLenght;
@@ -45,11 +45,24 @@ public class Tile {
 		tileRenderCoordY = row*tileRenderSide - camera.getY();
 	}
 	
+	
+	public void assignContent(int i) {
+		content = i;
+		if(i >= 0) {
+			colorUsed = Color.RED;
+		}
+	}
+	
+	
 	public void render(Graphics2D g) {
 		//System.out.println("TILE");
+		
+		if(colorUsed != Color.WHITE) {
+			g.setColor(colorUsed);
+			g.drawRect(tileRenderCoordX, tileRenderCoordY, tileRenderSide, tileRenderSide);
+		}
+		
 
-		g.setColor(colorUsed);
-		g.drawRect(tileRenderCoordX, tileRenderCoordY, tileRenderSide, tileRenderSide);
 		
 		
 	}
