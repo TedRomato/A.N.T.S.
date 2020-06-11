@@ -19,6 +19,7 @@ import gameObjectClasses.Pile;
 import gameObjectClasses.Tree;
 import handlers.Camera;
 import handlers.Input;
+import handlers.Input.WheelMove;
 import world.Grid;
 import world.Location;
 import world.Tile;
@@ -30,7 +31,7 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 	int x = 0;
 	double msPerUpdate = ms/UPS;
 	
-	Input input = new Input();
+	public static Input input = new Input();
 
 	int contentPanelWidth;
 	int contentPanelHeight;
@@ -107,7 +108,6 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 
 	
 	}
-	
 	//paints the actual game objects from the render method
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -160,8 +160,8 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		int notches = e.getWheelRotation();
 		input.checkMouseWheelMove(notches);
-		
-	}
+		camera.smoothZoom(input.WheelMoveForAmount(0.1));
+		}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
