@@ -24,11 +24,19 @@ public class Location {
 	public Location() {
 		grid = new Grid(100,100);
 		Tree t = new Tree(4550 ,grid);
-		Tree t2 = new Tree(4580 ,grid);
+		Tree t2 = new Tree(2780 ,grid);
+		Tree t3 = new Tree(1630 ,grid);
+		Tree t4 = new Tree(8020 ,grid);
+		Tree t5 = new Tree(7080 ,grid);
+		
 		gridSnappingObjects = new ContentArray(10);
 		animated = new ContentArray(10);
 		addObToLocation(t);
 		addObToLocation(t2);
+		addObToLocation(t3);
+		addObToLocation(t4);
+		addObToLocation(t5);
+
 
 		try {
 			bg = ImageIO.read(new File("ANTS/src/bg/Background.png"));
