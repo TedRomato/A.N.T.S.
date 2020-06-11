@@ -3,9 +3,7 @@ package handlers;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-
-import handlers.Input.WheelMove;
-import interfacePackage.Game;
+import world.Grid;
 import world.Location;
 import world.Tile;
 
@@ -32,16 +30,14 @@ public class Camera {
 	int topMostRenderRow;
 	int botMostRenderRow;
 	
-	int maxDistanceFromBorderX;
-	int maxDistanceFromBorderY;
+	int maxDistanceFromBorder;
 
 	
 	public Camera(Location loc, int width, int height) {
 		
 		this.width = width;
 		this.height = height;
-		maxDistanceFromBorderY = height/2;
-		maxDistanceFromBorderX = width/2;
+		maxDistanceFromBorder = height/2;
 		cameraMover = new CameraMover(width, height);
 		locationObserved = loc;
 		bg = locationObserved.bg;
@@ -57,20 +53,21 @@ public class Camera {
 		 g.drawImage(bg, 0 - x, 0 - y, (int) (locationObserved.getGrid().getGridColumns()*tileRenderSize), (int)(locationObserved.getGrid().getGridRows()*tileRenderSize), null);
 
 		 //render grid
-		/* for(int col = leftMostRenderColumn; col < rightMostRenderColumn; col++){
+		 for(int col = leftMostRenderColumn; col < rightMostRenderColumn; col++){
 			 for(int row = topMostRenderRow; row < botMostRenderRow;row++){
 				 locationObserved.getGrid().getTiles()[(row*locationObserved.getGrid().getGridColumns())+col].render(g); 	
 			 }
-		 }*/
+		 }
+		 
+
 	}
 	
 	public void renderGridSnappingObjects(Graphics2D g) {
 		int objectsHandled = 0;
 		for(int i = 0; i < locationObserved.gridSnappingObjects.getArr().length; i++) {
 			if(locationObserved.gridSnappingObjects.getArr()[i] != -1) {
-				
 				locationObserved.objectsInLocation[locationObserved.gridSnappingObjects.getArr()[i]].render(g, this);
-				
+				objectsHandled++;
 				if(objectsHandled >= locationObserved.gridSnappingObjects.getContents()) {
 					return;
 				}
@@ -80,10 +77,10 @@ public class Camera {
 	
 	
 	public void move(int x, int y) {
-		if(moveInRange(this.y+y,locationObserved.getGrid().getGridRows()*tileRenderSize, maxDistanceFromBorderY)) {
+		if(moveInRange(this.y+y,locationObserved.getGrid().getGridRows()*tileRenderSize, maxDistanceFromBorder,height)) {
 			this.y += y;
 		}
-		if(moveInRange(this.x+x,locationObserved.getGrid().getGridColumns()*tileRenderSize, maxDistanceFromBorderX)) {
+		if(moveInRange(this.x+x,locationObserved.getGrid().getGridColumns()*tileRenderSize, maxDistanceFromBorder,width)) {
 			this.x += x;
 		}
 		updateCameraBorders();
@@ -144,8 +141,8 @@ public class Camera {
 	}
 	
 	
-	private boolean moveInRange(int newCoord, int size, int maxDistanceFromBorder) {
-		if(newCoord > size - maxDistanceFromBorder) {
+	private boolean moveInRange(int newCoord, int size, int maxDistanceFromBorder, int screen) {
+		if(newCoord + screen> size + maxDistanceFromBorder) {
 			return false;
 		}else if(newCoord < 0 - maxDistanceFromBorder){
 			return false;
@@ -242,5 +239,9 @@ public class Camera {
 
 	public int getTileRenderSize() {
 		return tileRenderSize;
+	}
+	
+	public Grid getGrid() {
+		return locationObserved.getGrid();
 	}
 }

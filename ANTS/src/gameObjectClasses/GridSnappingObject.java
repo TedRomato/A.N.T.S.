@@ -9,6 +9,14 @@ public abstract class GridSnappingObject extends GameObject{
 	int baseTile;
 	int[][] shape;
 	int[] ocupiedTiles;
+	
+	int imageBaseTileOffsetX = -195;
+	int imageBaseTileOffsetY = -500;
+	
+	int imageHeight = 750;
+	int imageWidth = 500;
+	
+
 
 	public GridSnappingObject() {
 		
@@ -16,17 +24,27 @@ public abstract class GridSnappingObject extends GameObject{
 	
 	@Override
 	public void render(Graphics g, Camera c) {
-//		g.drawImage(sprites[]currentSpritePointer, x, y, width, height, null);
+		g.drawImage(sprites[currentSpritePointer], 
+				(baseTile - (baseTile/c.getGrid().getGridColumns())*c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getX() + imageBaseTileOffsetX, 
+				(baseTile/c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getY() + imageBaseTileOffsetY,
+				imageWidth, imageHeight, null);
 	}
 	
-	
+	@Override
+	public boolean checkIfInViewport(Camera c) {
+	/*	if() {
+			return true;
+		}
+		return false;
+		*/
+		return false;
+	}
 	
 	
 	public void setOccupiedTiles(Grid g) {
 		ocupiedTiles = new int[shape.length];
 		for(int i = 0; i < ocupiedTiles.length; i++) {
 			ocupiedTiles[i] = baseTile + shape[i][0] + shape[i][1]*g.getGridColumns();
-			System.out.println(ocupiedTiles[i]);
 		}
 		
 	}
@@ -68,9 +86,7 @@ public abstract class GridSnappingObject extends GameObject{
 			}
 		}
 		
-		for(int i = 0; i < shape.length; i++) {
-			System.out.println(shape[i][0] + "," + shape[i][1] + ";");
-		}
+		
 	}
 	
 	public int getTileAmount(String coords) {
@@ -81,6 +97,10 @@ public abstract class GridSnappingObject extends GameObject{
 			}
 		}
 		return tileAmount;
+	}
+	
+	public int[] getOccupiedTiles() {
+		return ocupiedTiles;
 	}
 	
 }

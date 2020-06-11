@@ -13,6 +13,7 @@ public class ContentArray {
 			if(arr[i] == -1) {
 				arr[i] = gameObject;
 				contents ++;
+				return;
 			}
 		}
 	}
