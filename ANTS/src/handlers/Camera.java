@@ -49,17 +49,17 @@ public class Camera {
 
 	}
 	
-	public void renderMap(Graphics2D g) {
+	public void renderBackground(Graphics2D g) {
 		 g.drawImage(bg, 0 - x, 0 - y, (int) (locationObserved.getGrid().getGridColumns()*tileRenderSize), (int)(locationObserved.getGrid().getGridRows()*tileRenderSize), null);
 
-		 //render grid
-		 for(int col = leftMostRenderColumn; col < rightMostRenderColumn; col++){
+	}
+	
+	public void renderGrid(Graphics2D g) {
+		for(int col = leftMostRenderColumn; col < rightMostRenderColumn; col++){
 			 for(int row = topMostRenderRow; row < botMostRenderRow;row++){
 				 locationObserved.getGrid().getTiles()[(row*locationObserved.getGrid().getGridColumns())+col].render(g); 	
 			 }
 		 }
-		 
-
 	}
 	
 	public void renderGridSnappingObjects(Graphics2D g) {
