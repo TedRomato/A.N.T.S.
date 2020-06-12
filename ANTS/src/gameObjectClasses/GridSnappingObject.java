@@ -114,4 +114,9 @@ public abstract class GridSnappingObject extends GameObject{
 		imageWidth = (int) ((double) Tile.tileSideLenght*imageWidthScale);
 	} 
 	
+	public void setImageOffset(double xOffsetMultiplier, double yOffsetMultiplier) {
+		imageBaseTileOffsetX = (int)((double)Tile.tileSideLenght*xOffsetMultiplier);
+		imageBaseTileOffsetY = (int)((double)Tile.tileSideLenght*yOffsetMultiplier);
+	} 
+	
 }
