@@ -10,12 +10,14 @@ public abstract class GridSnappingObject extends GameObject{
 	int baseTile;
 	int[][] shape;
 	int[] ocupiedTiles;
+
+
+
+	int imageBaseTileOffsetX = 0;
+	int imageBaseTileOffsetY = 0;
 	
-	int imageBaseTileOffsetX = -195;
-	int imageBaseTileOffsetY = -500;
-	
-	int imageHeight = 750;
-	int imageWidth = 500;
+	int imageHeight = 5;
+	int imageWidth = 5;
 	
 
 
@@ -25,6 +27,7 @@ public abstract class GridSnappingObject extends GameObject{
 	
 	@Override
 	public void render(Graphics g, Camera c) {
+		
 		g.drawImage(sprites[currentSpritePointer], 
 				(baseTile - (baseTile/c.getGrid().getGridColumns())*c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getX() + (int)Math.round(imageBaseTileOffsetX*((double)c.getTileRenderSize())/(double)Tile.tileSideLenght), 
 				(baseTile/c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getY() + (int)Math.round(imageBaseTileOffsetY*((double)c.getTileRenderSize())/(double)Tile.tileSideLenght),
@@ -104,5 +107,15 @@ public abstract class GridSnappingObject extends GameObject{
 	public int[] getOccupiedTiles() {
 		return ocupiedTiles;
 	}
+
+	public void setImageScale(double imageHeightScale , double imageWidthScale) {
+		imageHeight = (int) ((double) Tile.tileSideLenght*imageHeightScale);
+		imageWidth = (int) ((double) Tile.tileSideLenght*imageWidthScale);
+	} 
+	
+	public void setImageOffset(double xOffsetMultiplier, double yOffsetMultiplier) {
+		imageBaseTileOffsetX = (int)((double)Tile.tileSideLenght*xOffsetMultiplier);
+		imageBaseTileOffsetY = (int)((double)Tile.tileSideLenght*yOffsetMultiplier);
+	} 
 	
 }

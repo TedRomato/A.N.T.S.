@@ -17,13 +17,20 @@ public class Tree extends SolidObject implements Animated{
 	public Tree(int baseTile, Grid g) {
 		this.baseTile = baseTile;
 		
+		//sets shape of this object on grid
+		//relative to baseTile
 		makeShape("0,0;-1,0;0,-1;1,0;0,1;-1,-1;1,1;1,-1;-1,1;-2,-1;-2,0;-2,1;2,-1;2,0;2,1;-1,2;0,2;1,2;-3,0;3,0;0,3;-1,-2;0,-2;1,-2;0,-3;");
 
-		
 		setOccupiedTiles(g);
 		
+		//amount of images used
 		sprites = new BufferedImage[3];
 		
+		//sets image offset and side ratio
+		setImageScale(18,14); //height width
+		setImageOffset(-5.2, -11.5); // x y
+		
+		//loading images
 		try {
 			sprites[0] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree1.png"));
 			sprites[1] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree2.png"));

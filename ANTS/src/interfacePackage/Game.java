@@ -1,3 +1,4 @@
+
 package interfacePackage;
 
 import java.awt.Dimension;
@@ -15,6 +16,7 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JPanel;
 
 import gameObjectClasses.GameObject;
+import gameObjectClasses.LivingObject;
 import gameObjectClasses.Pile;
 import gameObjectClasses.Tree;
 import handlers.Camera;
@@ -39,7 +41,8 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 	public static double screenRatio;
 	
 	Camera camera;
-
+	
+	LivingObject lv;
 	Grid grid;
 	Tile t;
 	Location l;
@@ -56,12 +59,13 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 		contentPanelHeight = screenHeight;
 		Game.screenRatio = (double)contentPanelWidth/1920;
 		System.out.println(Game.screenRatio);
-		Tile.tileSideLenght = (int) Math.round(40*Game.screenRatio);
+		Tile.tileSideLenght = (int) Math.round(60*Game.screenRatio);
 
 		Tile.tilePossibleSizeRange = new int[] {(int) Math.round(Tile.tileSideLenght*0.4),(int) Math.round(Tile.tileSideLenght*1.6)};
 
 	//	Tile.tilePossibleSizeRange = new int[] {(int) Math.round(Tile.tileSideLenght*0.6),(int) Math.round(Tile.tileSideLenght*1.4)};
-
+		lv = new LivingObject(new int[]{100,100,200,200}, new int[] {100,200,200,100},150,150,1);
+		
 		l = new Location();
 		camera = new Camera(l, screenWidth, screenHeight);
 		camera.updateCameraBorders();
@@ -95,6 +99,7 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 	public void tick(){
 		l.updateLocation();
 		camera.handleCameraMoving(input.getCursorX(),input.getCursorY());
+		lv.update(1,1);
 
 	}
 	//render game objects on their updated positions
@@ -102,7 +107,13 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 		//System.out.println("RENDER");		
 		camera.renderBackground(g2);
 		camera.renderGridSnappingObjects(g2);
-		camera.renderGrid(g2);
+
+//		lv.render(g2, camera);
+
+		if(input.checkIfKeyPressed('g')) {
+			camera.renderGrid(g2);
+		}
+
 	
 	}
 	//paints the actual game objects from the render method
