@@ -108,7 +108,7 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 		camera.renderBackground(g2);
 		camera.renderGridSnappingObjects(g2);
 
-		lv.render(g2, camera);
+//		lv.render(g2, camera);
 
 		if(input.checkIfKeyPressed('g')) {
 			camera.renderGrid(g2);
