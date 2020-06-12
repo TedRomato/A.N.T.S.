@@ -27,10 +27,11 @@ import world.Tile;
 public class Game extends JPanel implements MouseListener, MouseWheelListener, MouseMotionListener{
 	boolean GameRunning = true;
 	int ms = 1000;
+	//updaty za sekundu
 	int UPS = 120;
 	int x = 0;
 	double msPerUpdate = ms/UPS;
-	
+	//
 	public static Input input = new Input();
 
 	int contentPanelWidth;

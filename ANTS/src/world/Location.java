@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import gameObjectClasses.GameObject;
 import gameObjectClasses.GridSnappingObject;
+import gameObjectClasses.River;
 import gameObjectClasses.Tree;
 import handlers.Animated;
 import handlers.ContentArray;
@@ -38,6 +39,7 @@ public class Location {
 		Tree t3 = new Tree(1630 ,grid);
 		Tree t4 = new Tree(8020 ,grid);
 		Tree t5 = new Tree(7080 ,grid);
+		River r = new River(4780 ,grid);
 		
 		gridSnappingObjects = new ContentArray(10);
 		animated = new ContentArray(10);
@@ -46,8 +48,8 @@ public class Location {
 		addObToLocation(t3);
 		addObToLocation(t4);
 		addObToLocation(t5);
-
-
+		addObToLocation(r);
+		
 		try {
 			bg = ImageIO.read(new File("ANTS/src/bg/Background.png"));
 		} catch (IOException e) {

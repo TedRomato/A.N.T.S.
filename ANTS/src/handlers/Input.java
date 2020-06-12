@@ -9,6 +9,7 @@ public class Input {
 	public enum WheelMove{DOWN,NONE,UP}
 	WheelMove move;
 	
+	//
 	public boolean checkIfKeyPressed(char key) {
 		for(char chars : pressedChars) {
 			if(key == chars) {
