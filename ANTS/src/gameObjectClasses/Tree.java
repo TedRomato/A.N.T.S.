@@ -27,8 +27,8 @@ public class Tree extends SolidObject implements Animated{
 		sprites = new BufferedImage[3];
 		
 		//sets image offset and side ratio
-		setImageScale(18,4);
-		setImageOffset(-5.2, -11.5);
+		setImageScale(18,14); //height width
+		setImageOffset(-5.2, -11.5); // x y
 		
 		//loading images
 		try {
