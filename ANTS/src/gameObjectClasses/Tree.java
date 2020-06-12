@@ -18,11 +18,11 @@ public class Tree extends SolidObject implements Animated{
 		this.baseTile = baseTile;
 		
 		makeShape("0,0;-1,0;0,-1;1,0;0,1;-1,-1;1,1;1,-1;-1,1;-2,-1;-2,0;-2,1;2,-1;2,0;2,1;-1,2;0,2;1,2;-3,0;3,0;0,3;-1,-2;0,-2;1,-2;0,-3;");
-
-		
 		setOccupiedTiles(g);
 		
 		sprites = new BufferedImage[3];
+		setImageScale(18,4);
+		setImageOffset(-5.2, -11.5);
 		
 		try {
 			sprites[0] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree1.png"));
