@@ -40,8 +40,6 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 	
 	Camera camera;
 
-	Grid grid;
-	Tile t;
 	Location l;
 	
 	public Game(int screenWidth, int screenHeight) {
@@ -49,13 +47,11 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 		addMouseWheelListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		grid = new Grid(20,20);
-		t= new Tile(50,50);
+		
 		
 		contentPanelWidth = screenWidth;
 		contentPanelHeight = screenHeight;
 		Game.screenRatio = (double)contentPanelWidth/1920;
-		System.out.println(Game.screenRatio);
 		Tile.tileSideLenght = (int) Math.round(60*Game.screenRatio);
 
 		Tile.tilePossibleSizeRange = new int[] {(int) Math.round(Tile.tileSideLenght*0.4),(int) Math.round(Tile.tileSideLenght*1.6)};

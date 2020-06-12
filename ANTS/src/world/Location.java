@@ -38,6 +38,7 @@ public class Location {
 		Tree t3 = new Tree(1630 ,grid);
 		Tree t4 = new Tree(8020 ,grid);
 		Tree t5 = new Tree(7080 ,grid);
+
 		
 		gridSnappingObjects = new ContentArray(10);
 		animated = new ContentArray(10);
