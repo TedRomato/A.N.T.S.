@@ -7,6 +7,17 @@ import world.Grid;
 import world.Location;
 import world.Tile;
 
+//This class handles viewport. 
+//How big things are rendered, and where are they rendered
+//you can move camera to see different parts of map (camera mover) 
+//you can zoom to see more stuff, or less but have bigger detail 
+
+
+//How it works - > camera is assigned loacationToObserve
+//It sets its render borders and handles only objects inside of
+//those borders to save some cpu
+//It renders other objects accordingly to camera scale and camera position
+
 
 public class Camera {
 	int x = 500, y = 500; 
