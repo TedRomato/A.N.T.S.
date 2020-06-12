@@ -17,10 +17,8 @@ public abstract class GridSnappingObject extends GameObject{
 	int imageBaseTileOffsetX = -(int)((double)Tile.tileSideLenght*xOffsetMultiplier);
 	int imageBaseTileOffsetY = -(int)((double)Tile.tileSideLenght*yOffsetMultiplier);
 	
-	double imageHeightScale;
-	double imageWidthScale;
-	int imageHeight = (int) ((double) Tile.tileSideLenght*imageHeightScale);
-	int imageWidth = (int) ((double) Tile.tileSideLenght*imageWidthScale);
+	int imageHeight;
+	int imageWidth;
 	
 
 
@@ -110,5 +108,10 @@ public abstract class GridSnappingObject extends GameObject{
 	public int[] getOccupiedTiles() {
 		return ocupiedTiles;
 	}
+
+	public void setImageScale(double imageHeightScale , double imageWidthScale) {
+		imageHeight = (int) ((double) Tile.tileSideLenght*imageHeightScale);
+		imageWidth = (int) ((double) Tile.tileSideLenght*imageWidthScale);
+	} 
 	
 }
