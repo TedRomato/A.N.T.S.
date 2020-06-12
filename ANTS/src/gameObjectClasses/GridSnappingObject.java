@@ -12,13 +12,12 @@ public abstract class GridSnappingObject extends GameObject{
 	int[] ocupiedTiles;
 
 
-	double xOffsetMultiplier;
-        double yOffsetMultiplier;
-	int imageBaseTileOffsetX = -(int)((double)Tile.tileSideLenght*xOffsetMultiplier);
-	int imageBaseTileOffsetY = -(int)((double)Tile.tileSideLenght*yOffsetMultiplier);
+
+	int imageBaseTileOffsetX = 0;
+	int imageBaseTileOffsetY = 0;
 	
-	int imageHeight;
-	int imageWidth;
+	int imageHeight = 5;
+	int imageWidth = 5;
 	
 
 
