@@ -2,6 +2,9 @@ package gameObjectClasses;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 import handlers.Camera;
 
@@ -53,6 +56,17 @@ public class LivingObject extends GameObject{
 		g.setColor(Color.RED);
 		g.fillPolygon(Xcords, Ycords, Xcords.length);
 	}
+	
+	//TODO
+	public void rotateImage(Graphics2D g,BufferedImage img,double ra, Corner rp, int width, int height, int rpX, int rpY) {
+		AffineTransform trans = new AffineTransform();
+		trans.rotate(Math.toRadians(ra),(rp.getX()*Game.camera.toMultiply() + Game.camera.toAddX()),(int)(rp.getY()*Game.camera.toMultiply() + Game.camera.toAddY()));
+		AffineTransform old = g.getTransform();
+		g.transform(trans);
+		g.drawImage(resize(img,(int)(width*Game.screenRatio),(int)(height*Game.screenRatio)),(int)((rp.getX()-rpX)*Game.camera.toMultiply() + Game.camera.toAddX()),(int)((rp.getY()-rpY)*Game.camera.toMultiply() + Game.camera.toAddY()),null);
+		g.setTransform(old);
+	}
+	
 	public boolean checkIfInViewport(Camera c) {
 		return false;
 	}
