@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import gameObjectClasses.GameObject;
 import gameObjectClasses.GridSnappingObject;
+import gameObjectClasses.Lake;
 import gameObjectClasses.Tree;
 import handlers.Animated;
 import handlers.ContentArray;
@@ -37,7 +38,6 @@ public class Location {
 		Tree t2 = new Tree(2780 ,grid);
 		Tree t3 = new Tree(1630 ,grid);
 		Tree t4 = new Tree(8020 ,grid);
-		Tree t5 = new Tree(7080 ,grid);
 
 		
 		gridSnappingObjects = new ContentArray(10);
@@ -46,7 +46,6 @@ public class Location {
 		addObToLocation(t2);
 		addObToLocation(t3);
 		addObToLocation(t4);
-		addObToLocation(t5);
 
 
 		try {

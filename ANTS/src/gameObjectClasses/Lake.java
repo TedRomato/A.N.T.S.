@@ -1,4 +1,5 @@
 package gameObjectClasses;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -8,11 +9,11 @@ import javax.imageio.ImageIO;
 import handlers.Animated;
 import world.Grid;
 
-public class Tree extends SolidObject implements Animated{
+public class Lake extends SolidObject implements Animated{
 	
 	double animationTimer = 0;
 	
-	public Tree(int baseTile, Grid g) {
+	public Lake(int baseTile, Grid g) {
 		this.baseTile = baseTile;
 		
 		//sets shape of this object on grid
@@ -30,9 +31,9 @@ public class Tree extends SolidObject implements Animated{
 		
 		//loading images
 		try {
-			sprites[0] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree1.png"));
-			sprites[1] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree2.png"));
-			sprites[2] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree3.png"));
+			sprites[0] = ImageIO.read(new File("ANTS/src/Lake/Lake1.png"));
+			sprites[1] = ImageIO.read(new File("ANTS/src/Lake/Lake2.png"));
+			sprites[2] = ImageIO.read(new File("ANTS/src/Lake/Lake3.png"));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
