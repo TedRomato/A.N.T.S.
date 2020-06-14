@@ -1,14 +1,17 @@
 package world;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import gameObjectClasses.Point;
+import gameObjectClasses.Ant;
 import gameObjectClasses.GameObject;
 import gameObjectClasses.GridSnappingObject;
+import gameObjectClasses.Lake;
+import gameObjectClasses.LivingObject;
 import gameObjectClasses.Tree;
 import handlers.Animated;
 import handlers.ContentArray;
@@ -27,6 +30,8 @@ public class Location {
 	public GameObject[] objectsInLocation = new GameObject[500];
 	public ContentArray gridSnappingObjects;
 	public ContentArray animated;
+	public ContentArray objectsToRender;
+	public ContentArray livingObjects;
 	Grid grid;
 	boolean isActive = false;
 	public BufferedImage bg;
@@ -37,16 +42,21 @@ public class Location {
 		Tree t2 = new Tree(2780 ,grid);
 		Tree t3 = new Tree(1630 ,grid);
 		Tree t4 = new Tree(8020 ,grid);
-		Tree t5 = new Tree(7080 ,grid);
+	//	Lake l = new Lake(3500, grid);
+		Ant a = new Ant(new Point(500,500), 0.02);
+
+
 
 		
+		livingObjects = new ContentArray(10);
 		gridSnappingObjects = new ContentArray(10);
 		animated = new ContentArray(10);
+		objectsToRender = new ContentArray(15);
 		addObToLocation(t);
 		addObToLocation(t2);
 		addObToLocation(t3);
 		addObToLocation(t4);
-		addObToLocation(t5);
+		addObToLocation(a);
 
 
 		try {
@@ -60,6 +70,7 @@ public class Location {
 	
 	public void updateLocation() {
 		updateAnimation();
+		updateLivingObjects();
 	}
 	
 	private void updateAnimation() {
@@ -74,13 +85,28 @@ public class Location {
 		}
 	}
 
-	
+	private void updateLivingObjects() {
+		int objectsHandled = 0;
+		for(int i = 0; i < livingObjects.getArr().length; i++) {
+			if(livingObjects.getArr()[i] != -1) {
+				((LivingObject) objectsInLocation[livingObjects.getArr()[i]]).updateLivingObject();
+				if(objectsHandled == livingObjects.getContents()) {
+					return;
+				}
+			}
+		}
+	}
 	
 	public void addObToLocation(GameObject go){
 		for(int i = 0; i < objectsInLocation.length; i++) {
 			if(objectsInLocation[i] == null) {
 				objectsInLocation[i] = go;
 				
+				objectsToRender.addToHandlerArr(i);
+				
+				if(go instanceof LivingObject) {
+					livingObjects.addToHandlerArr(i);
+				}
 				
 				if(go instanceof GridSnappingObject) {
 					gridSnappingObjects.addToHandlerArr(i);
