@@ -73,6 +73,19 @@ public class Camera {
 		 }
 	}
 	
+	public void renderAllObjects(Graphics2D g) {
+		int objectsHandled = 0;
+		for(int i = 0; i < locationObserved.objectsToRender.getArr().length; i++) {
+			if(locationObserved.objectsToRender.getArr()[i] != -1) {
+				locationObserved.objectsInLocation[locationObserved.objectsToRender.getArr()[i]].render(g, this);
+				objectsHandled++;
+				if(objectsHandled >= locationObserved.objectsToRender.getContents()) {
+					return;
+				}
+			}
+		}
+	}
+	/*
 	public void renderGridSnappingObjects(Graphics2D g) {
 		int objectsHandled = 0;
 		for(int i = 0; i < locationObserved.gridSnappingObjects.getArr().length; i++) {
@@ -85,6 +98,7 @@ public class Camera {
 			}
 		}
 	}
+	*/
 	
 	
 	public void move(int x, int y) {
