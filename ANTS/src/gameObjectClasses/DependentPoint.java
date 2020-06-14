@@ -10,7 +10,6 @@ public class DependentPoint extends Point{
 		
 		distanceFromMainPoint = getDistanceFromPoint(rp);
 		currentAngle = getAngleFrom(rp);
-		System.out.println("starting angle : " + currentAngle);
 		// TODO Auto-generated constructor stub
 	}
 	
