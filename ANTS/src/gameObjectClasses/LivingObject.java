@@ -101,27 +101,17 @@ public abstract class LivingObject extends GameObject{
 	
 	public void render(Graphics2D g, Camera c) {
 		double tileRatio = (double)c.getTileRenderSize()/(double)Tile.tileSideLenght;
-	/*	g.drawImage(sprites[currentSpritePointer], 
-				(int)(rp.getX()*tileRatio - c.getX() - imageOffsetX*tileRatio), 
-				(int)(rp.getY()*tileRatio - c.getY()  - imageOffsetY*tileRatio),
-				(int)Math.round((double)(imageWidth*tileRatio)), 
-				(int)Math.round((double)(imageHeight*tileRatio)), null);*/
+
 		rotateImage(g, c, tileRatio);
+		/* Colliders render
 		g.setColor(Color.RED);
 		for(CollisionSquare cs : colliders) {
 			cs.render(g, c);
 		}
+		*/
 		
 	}
 	
-	public static void rotateImage(Graphics2D g,BufferedImage img,int width, int height,double ra/*angle of rotation*/, Point rp, int rpX/*rotation point offset X*/, int rpY/*rotation point offset Y*/) {
-		AffineTransform trans = new AffineTransform();
-		trans.rotate(Math.toRadians(ra),(int)(rp.getX()/* +*camera scale*/),(int)(rp.getY()/* +*camera scale)*/));
-		AffineTransform old = g.getTransform();
-		g.transform(trans);
-		g.drawImage(img, (int)(rp.getX()-rpX/* +*camera scale)*/),(int)(rp.getY()-rpY/* +*camera scale)*/),width,height,null);
-		g.setTransform(old);
-	}
 	
 	public void rotateImage(Graphics2D g,Camera camera, double tileRatio) {
 		AffineTransform trans = new AffineTransform();

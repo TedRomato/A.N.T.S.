@@ -23,12 +23,13 @@ public abstract class GridSnappingObject extends GameObject{
 	
 	@Override
 	public void render(Graphics2D g, Camera c) {
-		
+		double tileRatio = (double)c.getTileRenderSize()/(double)Tile.tileSideLenght;
+
 		g.drawImage(sprites[currentSpritePointer], 
-				(baseTile - (baseTile/c.getGrid().getGridColumns())*c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getX() + (int)Math.round(imageOffsetX*((double)c.getTileRenderSize())/(double)Tile.tileSideLenght), 
-				(baseTile/c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getY() + (int)Math.round(imageOffsetY*((double)c.getTileRenderSize())/(double)Tile.tileSideLenght),
-				(int)Math.round((double)(imageWidth*c.getTileRenderSize())/(double)Tile.tileSideLenght), 
-				(int)Math.round((double)(imageHeight*c.getTileRenderSize())/(double)Tile.tileSideLenght), null);
+				(baseTile - (baseTile/c.getGrid().getGridColumns())*c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getX() + (int)Math.round(imageOffsetX*(tileRatio)), 
+				(baseTile/c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getY() + (int)Math.round(imageOffsetY*(tileRatio)),
+				(int)Math.round((double)(imageWidth*tileRatio)), 
+				(int)Math.round((double)(imageHeight*tileRatio)), null);
 	}
 	
 	@Override
