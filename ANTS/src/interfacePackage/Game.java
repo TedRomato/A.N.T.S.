@@ -118,8 +118,7 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 	
 	}
 	
-	
-	//paints the actual game objects from the render method
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
