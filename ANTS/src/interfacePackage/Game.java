@@ -15,6 +15,7 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
 
+import gameObjectClasses.Ant;
 import gameObjectClasses.GameObject;
 import gameObjectClasses.LivingObject;
 import gameObjectClasses.Pile;
@@ -42,7 +43,6 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 	
 	Camera camera;
 	
-	LivingObject lv;
 	Grid grid;
 	Tile t;
 	Location l;
@@ -64,7 +64,7 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 		Tile.tilePossibleSizeRange = new int[] {(int) Math.round(Tile.tileSideLenght*0.4),(int) Math.round(Tile.tileSideLenght*1.6)};
 
 	//	Tile.tilePossibleSizeRange = new int[] {(int) Math.round(Tile.tileSideLenght*0.6),(int) Math.round(Tile.tileSideLenght*1.4)};
-		lv = new LivingObject(new int[]{100,100,200,200}, new int[] {100,200,200,100},150,150,1);
+		
 		
 		l = new Location();
 		camera = new Camera(l, screenWidth, screenHeight);
@@ -99,16 +99,14 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 	public void tick(){
 		l.updateLocation();
 		camera.handleCameraMoving(input.getCursorX(),input.getCursorY());
-		lv.update(1,1);
 
 	}
 	//render game objects on their updated positions
 	public void render(Graphics2D g2) {
 		//System.out.println("RENDER");		
 		camera.renderBackground(g2);
-		camera.renderGridSnappingObjects(g2);
+		camera.renderAllObjects(g2);
 
-//		lv.render(g2, camera);
 
 		if(input.checkIfKeyPressed('g')) {
 			camera.renderGrid(g2);

@@ -7,54 +7,114 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import handlers.Camera;
+import world.Tile;
 
-public class LivingObject extends GameObject{
-	int[] Xcords, Ycords, distancesX,distancesY;
-	int rpX, rpY, radius;
-	int angle;
-	int degrees = 1;
+public abstract class LivingObject extends GameObject{
+	CollisionSquare[] colliders;
+	Point rp;
+	DependentPoint md;
+	double vel, velX, velY, xyRatio;
+	boolean moving, facingUp, facingLeft;
+	double angle = 0;
+	double testingAngleToRotate = 0.02;
 	boolean distanceDone = false;
-	public LivingObject(int[] Xcords, int[] Ycords, int rpX, int rpY,int angle) {
-		if(Xcords.length != Ycords.length) {
-			System.out.println("Cords missing");
+	public LivingObject(Point rp, double mdXOffset, double mdYOffset, double vel) {
+		this.rp = rp;
+		this.md = new DependentPoint(rp.getX() - mdXOffset, rp.getY() - mdYOffset, rp);
+		this.vel = vel;
+		updateAfterRotate();
+	}
+	
+	//TODO rotate rozbiji rotujici collision ctverce po x 
+	
+	public void updateLivingObject() {
+		rotate(testingAngleToRotate);
+		move(velX,velY);
+	}
+	
+	protected void rotateToPoint(Point toRotateTo) {
+		rotate(toRotateTo.getAngleFrom(rp) - md.getAngleFrom(rp));
+	}
+	
+	protected void rotate(double angleToRotate) {
+		angle += angleToRotate;
+		md.rotateAroundPoint(rp, angleToRotate);
+		for(CollisionSquare cs : colliders) {
+			cs.rotateAround(rp, angleToRotate);
 		}
-		else {
-			this.Xcords = Xcords;
-			this.Ycords = Ycords;
-			this.rpX = rpX;
-			this.rpY = rpY;
-			this.degrees = angle;
-			this.angle = 360/Xcords.length/2;
-			distancesX = new int[Xcords.length];
-			distancesY = new int[Xcords.length];
+		updateAfterRotate();
+	}
+	protected void move(double velX, double velY) {
+		rp.move(velX, velY);
+		md.move(velX, velY);
+		for(CollisionSquare cs : colliders) {
+			cs.move(velX, velY);
 		}
 	}
-	public void update(int VelX, int VelY) {
-		move(VelX,VelY);
-		rotate();
+	
+	protected void makeMainCollider(double side) {
+		colliders = new CollisionSquare[1];
+		colliders[0] = new CollisionSquare(rp.getX(), rp.getY(), side, rp);
 	}
-	public void rotate() {
-		int currentAngle = angle;
-		for(int i = 0; i < Xcords.length;i++) {
-			if(!distanceDone) {
-				distancesX[i] = Math.abs(rpX - Xcords[i]);
-				distancesY[i] = Math.abs(rpY - Ycords[i]);
-			}
-			Xcords[i] = (int) (rpX + Math.cos(Math.toRadians(angle))*distancesX[i]);
-			Ycords[i] = (int) (rpY + Math.sin(Math.toRadians(angle))*distancesY[i]);
-			angle += 360/Xcords.length;
+	
+	protected void updateAfterRotate(){
+		voidGetNewRatio();
+		setVelDirection();
+		setVelocitySizes();
+		setVelocityDirections();
+	}
+	
+	protected void voidGetNewRatio() {
+		xyRatio = Math.abs((rp.getX() - md.getX())/(rp.getY() - md.getY()));
+	}
+	
+	protected void setVelocitySizes() {
+		velY = Math.sqrt(Math.pow(vel, 2)/(Math.pow(xyRatio, 2)+1));
+		velX = xyRatio*velY;
+	}
+	
+	protected void setVelocityDirections() {
+		if(facingUp) {
+			velY = -Math.abs(velY);
+		}else {
+			velY = Math.abs(velY);
 		}
-		distanceDone = true;
-		angle = currentAngle;
-		angle+=degrees;
+		if(facingLeft) {
+			velX = -Math.abs(velX);
+		}else {
+			velX = Math.abs(velX);
+		}
 	}
-	public void move(int VelX, int VelY) {
-		rpX+=VelX;
-		rpY+=VelY;
+	
+	protected void setVelDirection() {;
+		if(md.getY() < rp.getY()) {
+			facingUp = true;
+		}else {
+			facingUp = false;
+		}
+		if(md.getX() < rp.getX()) {
+			facingLeft = true;
+		}else {
+			facingLeft = false;
+		}
 	}
+	
 	public void render(Graphics g, Camera c) {
 		g.setColor(Color.RED);
-		g.fillPolygon(Xcords, Ycords, Xcords.length);
+		for(CollisionSquare cs : colliders) {
+			cs.render(g, c);
+		}
+		
+	}
+	
+	protected void addCollisionSquare(double offsetX, double offsetY, double side) {
+		CollisionSquare[] temp = colliders;
+		colliders = new CollisionSquare[temp.length+1];
+		for(int i = 0; i < temp.length; i++) {
+			colliders[i] = temp[i];
+		}
+		colliders[colliders.length - 1] = new CollisionSquare(rp.getX() - offsetX, rp.getY() - offsetY, side, rp);
+		
 	}
 	
 	//TODO
@@ -70,30 +130,7 @@ public class LivingObject extends GameObject{
 	public boolean checkIfInViewport(Camera c) {
 		return false;
 	}
-	public int[] getXcords() {
-		return Xcords;
-	}
-	public void setXcords(int[] xcords) {
-		Xcords = xcords;
-	}
-	public int[] getYcords() {
-		return Ycords;
-	}
-	public void setYcords(int[] ycords) {
-		Ycords = ycords;
-	}
-	public int getRpX() {
-		return rpX;
-	}
-	public void setRpX(int rpX) {
-		this.rpX = rpX;
-	}
-	public int getRpY() {
-		return rpY;
-	}
-	public void setRpY(int rpY) {
-		this.rpY = rpY;
-	}
+	
 	public double getAngle() {
 		return angle;
 	}
