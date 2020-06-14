@@ -12,6 +12,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -19,6 +21,7 @@ import gameObjectClasses.Ant;
 import gameObjectClasses.GameObject;
 import gameObjectClasses.LivingObject;
 import gameObjectClasses.Pile;
+import gameObjectClasses.Point;
 import gameObjectClasses.Tree;
 import handlers.Camera;
 import handlers.Input;
@@ -113,6 +116,15 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 		}
 
 	
+	}
+	
+	public static void rotateImage(Graphics2D g,BufferedImage img,double ra/*angle of rotation*/, Point rp, int rpX/*rotation point offset X*/, int rpY/*rotation point offset Y*/) {
+		AffineTransform trans = new AffineTransform();
+		trans.rotate(Math.toRadians(ra),(rp.getX()),(int)(rp.getY()));
+		AffineTransform old = g.getTransform();
+		g.transform(trans);
+		g.drawImage(img, (int)(rp.getX()-rpX),(int)(rp.getY()-rpY),null);
+		g.setTransform(old);
 	}
 	//paints the actual game objects from the render method
 	@Override
