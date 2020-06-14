@@ -118,12 +118,12 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 	
 	}
 	
-	public static void rotateImage(Graphics2D g,BufferedImage img,double ra/*angle of rotation*/, Point rp, int rpX/*rotation point offset X*/, int rpY/*rotation point offset Y*/) {
+	public static void rotateImage(Graphics2D g,BufferedImage img,int width, int height,double ra/*angle of rotation*/, Point rp, int rpX/*rotation point offset X*/, int rpY/*rotation point offset Y*/) {
 		AffineTransform trans = new AffineTransform();
 		trans.rotate(Math.toRadians(ra),(int)(rp.getX()/* +*camera scale*/),(int)(rp.getY()/* +*camera scale)*/));
 		AffineTransform old = g.getTransform();
 		g.transform(trans);
-		g.drawImage(img, (int)(rp.getX()-rpX/* +*camera scale)*/),(int)(rp.getY()-rpY/* +*camera scale)*/),null);
+		g.drawImage(img, (int)(rp.getX()-rpX/* +*camera scale)*/),(int)(rp.getY()-rpY/* +*camera scale)*/),width,height,null);
 		g.setTransform(old);
 	}
 	//paints the actual game objects from the render method
