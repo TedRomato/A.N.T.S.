@@ -26,7 +26,6 @@ public abstract class LivingObject extends GameObject{
 		updateAfterRotate();
 	}
 	
-	//TODO rotate rozbiji rotujici collision ctverce po x 
 	
 	public void updateLivingObject() {
 		rotate(testingAngleToRotate);
@@ -100,12 +99,28 @@ public abstract class LivingObject extends GameObject{
 		}
 	}
 	
-	public void render(Graphics g, Camera c) {
+	public void render(Graphics2D g, Camera c) {
+		double tileRatio = (double)c.getTileRenderSize()/(double)Tile.tileSideLenght;
+	/*	g.drawImage(sprites[currentSpritePointer], 
+				(int)(rp.getX()*tileRatio - c.getX() - imageOffsetX*tileRatio), 
+				(int)(rp.getY()*tileRatio - c.getY()  - imageOffsetY*tileRatio),
+				(int)Math.round((double)(imageWidth*tileRatio)), 
+				(int)Math.round((double)(imageHeight*tileRatio)), null);*/
+		rotateImage(g, c, tileRatio);
 		g.setColor(Color.RED);
 		for(CollisionSquare cs : colliders) {
 			cs.render(g, c);
 		}
 		
+	}
+	
+	public void rotateImage(Graphics2D g,Camera camera, double tileRatio) {
+		AffineTransform trans = new AffineTransform();
+		trans.rotate(angle,(int)(rp.getX()*tileRatio - camera.getX()),(int)(rp.getY()*tileRatio - camera.getY()));
+		AffineTransform old = g.getTransform();
+		g.transform(trans);
+		g.drawImage(sprites[currentSpritePointer], (int)(rp.getX()*tileRatio- camera.getX()- imageOffsetX*tileRatio),(int)(rp.getY()*tileRatio-camera.getY()-imageOffsetY*tileRatio),null);
+		g.setTransform(old);
 	}
 	
 	protected void addCollisionSquare(double offsetX, double offsetY, double side) {

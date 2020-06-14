@@ -43,7 +43,7 @@ public class Location {
 		Tree t3 = new Tree(1630 ,grid);
 		Tree t4 = new Tree(8020 ,grid);
 	//	Lake l = new Lake(3500, grid);
-		Ant a = new Ant(new Point(500,500), 0.02);
+		Ant a = new Ant(new Point(500,500));
 
 
 

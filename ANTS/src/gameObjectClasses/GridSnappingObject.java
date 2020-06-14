@@ -1,6 +1,7 @@
 package gameObjectClasses;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import handlers.Camera;
 import world.Grid;
@@ -13,11 +14,6 @@ public abstract class GridSnappingObject extends GameObject{
 
 
 
-	int imageBaseTileOffsetX = 0;
-	int imageBaseTileOffsetY = 0;
-	
-	int imageHeight = 5;
-	int imageWidth = 5;
 	
 
 
@@ -26,11 +22,11 @@ public abstract class GridSnappingObject extends GameObject{
 	}
 	
 	@Override
-	public void render(Graphics g, Camera c) {
+	public void render(Graphics2D g, Camera c) {
 		
 		g.drawImage(sprites[currentSpritePointer], 
-				(baseTile - (baseTile/c.getGrid().getGridColumns())*c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getX() + (int)Math.round(imageBaseTileOffsetX*((double)c.getTileRenderSize())/(double)Tile.tileSideLenght), 
-				(baseTile/c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getY() + (int)Math.round(imageBaseTileOffsetY*((double)c.getTileRenderSize())/(double)Tile.tileSideLenght),
+				(baseTile - (baseTile/c.getGrid().getGridColumns())*c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getX() + (int)Math.round(imageOffsetX*((double)c.getTileRenderSize())/(double)Tile.tileSideLenght), 
+				(baseTile/c.getGrid().getGridColumns())*c.getTileRenderSize() - c.getY() + (int)Math.round(imageOffsetY*((double)c.getTileRenderSize())/(double)Tile.tileSideLenght),
 				(int)Math.round((double)(imageWidth*c.getTileRenderSize())/(double)Tile.tileSideLenght), 
 				(int)Math.round((double)(imageHeight*c.getTileRenderSize())/(double)Tile.tileSideLenght), null);
 	}
@@ -108,14 +104,6 @@ public abstract class GridSnappingObject extends GameObject{
 		return ocupiedTiles;
 	}
 
-	public void setImageScale(double imageHeightScale , double imageWidthScale) {
-		imageHeight = (int) ((double) Tile.tileSideLenght*imageHeightScale);
-		imageWidth = (int) ((double) Tile.tileSideLenght*imageWidthScale);
-	} 
 	
-	public void setImageOffset(double xOffsetMultiplier, double yOffsetMultiplier) {
-		imageBaseTileOffsetX = (int)((double)Tile.tileSideLenght*xOffsetMultiplier);
-		imageBaseTileOffsetY = (int)((double)Tile.tileSideLenght*yOffsetMultiplier);
-	} 
 	
 }

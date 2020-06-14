@@ -1,6 +1,7 @@
 package gameObjectClasses;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import handlers.Camera;
 
@@ -17,7 +18,7 @@ public class Item extends GridSnappingObject{
 	
 	
 	@Override
-	public void render(Graphics g, Camera c) {
+	public void render(Graphics2D g, Camera c) {
 		switch(currentState) {
 			case Laying:
 				//render image
