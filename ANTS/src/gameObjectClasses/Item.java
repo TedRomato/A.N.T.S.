@@ -2,6 +2,8 @@ package gameObjectClasses;
 
 import java.awt.Graphics;
 
+import handlers.Camera;
+
 public class Item extends GridSnappingObject{
 	
 	enum State{
@@ -12,8 +14,10 @@ public class Item extends GridSnappingObject{
 	
 	State currentState = State.Laying;
 	
+	
+	
 	@Override
-	public void render(Graphics g) {
+	public void render(Graphics g, Camera c) {
 		switch(currentState) {
 			case Laying:
 				//render image
