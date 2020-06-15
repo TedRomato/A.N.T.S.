@@ -20,7 +20,7 @@ import world.Tile;
 
 
 public class Camera {
-	int x = 500, y = 500; 
+	int x = 0, y = 0; 
 	int width, height;
 	double scale = 0; 
 	int[] zoomRange = new int[] {-1,1};

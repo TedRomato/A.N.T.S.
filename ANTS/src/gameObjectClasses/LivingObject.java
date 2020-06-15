@@ -11,30 +11,39 @@ import interfacePackage.Game;
 import world.Tile;
 
 public abstract class LivingObject extends GameObject{
-	CollisionSquare[] colliders;
+	CollisionSquare[] colliders = new CollisionSquare[0];
 	Point rp;
+	Point goalDestination;
 	DependentPoint md;
 	double vel, velX, velY, xyRatio;
-	boolean moving, facingUp, facingLeft;
-	double angle = 0;
+	boolean moving = true, facingUp, facingLeft;
+	double angle;
 	double testingAngleToRotate = 0.02;
 	boolean distanceDone = false;
-	public LivingObject(Point rp, double mdXOffset, double mdYOffset, double vel) {
+	public LivingObject(Point rp, double vel) {
 		this.rp = rp;
-		this.md = new DependentPoint(rp.getX() - mdXOffset, rp.getY() - mdYOffset, rp);
+		this.md = new DependentPoint(rp.getX(), rp.getY() - 50, rp);
 		this.vel = vel;
+		angle = md.getAngleFrom(rp);
 		updateAfterRotate();
 	}
 	
-	//TODO rotate rozbiji rotujici collision ctverce po x 
 	
 	public void updateLivingObject() {
-		rotate(testingAngleToRotate);
-		move(velX,velY);
+		//moves ant
+		move();
+		
+		//ant decides if it still needs to be moving to reach goal destination
+		decideIfContinueMoving();
+		
+		//If right mouse pressed ant rotates to goal location
+		if(Game.input.isRightMousePressed()) {
+			setNewGoalDestination(new Point(Game.input.getCursorXOnMap(), Game.input.getCursorYOnMap()));
+		}
 	}
 	
 	protected void rotateToPoint(Point toRotateTo) {
-		rotate(toRotateTo.getAngleFrom(rp) - md.getAngleFrom(rp));
+		rotate((toRotateTo.getAngleFrom(rp) - md.getAngleFrom(rp)));
 	}
 	
 	protected void rotate(double angleToRotate) {
@@ -45,11 +54,13 @@ public abstract class LivingObject extends GameObject{
 		}
 		updateAfterRotate();
 	}
-	protected void move(double velX, double velY) {
-		rp.move(velX, velY);
-		md.move(velX, velY);
-		for(CollisionSquare cs : colliders) {
-			cs.move(velX, velY);
+	protected void move() {
+		if(moving) {
+			rp.move(velX, velY);
+			md.move(velX, velY);
+			for(CollisionSquare cs : colliders) {
+				cs.move(velX, velY);
+			}
 		}
 	}
 	
@@ -70,8 +81,14 @@ public abstract class LivingObject extends GameObject{
 	}
 	
 	protected void setVelocitySizes() {
-		velY = Math.sqrt(Math.pow(vel, 2)/(Math.pow(xyRatio, 2)+1));
-		velX = xyRatio*velY;
+		if(xyRatio == Double.POSITIVE_INFINITY) {
+			velY = 0;
+			velX = vel;
+		}else {
+			velY = Math.sqrt(Math.pow(vel, 2)/(Math.pow(xyRatio, 2)+1));
+			velX = xyRatio*velY;
+		}
+		
 	}
 	
 	protected void setVelocityDirections() {
@@ -100,14 +117,6 @@ public abstract class LivingObject extends GameObject{
 		}
 	}
 	
-	public void render(Graphics g, Camera c) {
-		g.setColor(Color.RED);
-		for(CollisionSquare cs : colliders) {
-			cs.render(g, c);
-		}
-		
-	}
-	
 	protected void addCollisionSquare(double offsetX, double offsetY, double side) {
 		CollisionSquare[] temp = colliders;
 		colliders = new CollisionSquare[temp.length+1];
@@ -117,6 +126,57 @@ public abstract class LivingObject extends GameObject{
 		colliders[colliders.length - 1] = new CollisionSquare(rp.getX() - offsetX, rp.getY() - offsetY, side, rp);
 		
 	}
+	
+	protected void decideIfContinueMoving() {
+		if(goalDestination.getDistanceFromPoint(this.rp) < 2) {
+			moving = false;
+		}
+	}
+	
+	protected void setNewGoalDestination(Point p) {
+		goalDestination = p;
+		moving = true;
+		rotateToPoint(goalDestination);
+		
+	}
+	
+	public void render(Graphics2D g, Camera c) {
+		double tileRatio = (double)c.getTileRenderSize()/(double)Tile.tileSideLenght;
+
+		rotateImage(g, c, tileRatio);
+		// Colliders render
+		g.setColor(Color.RED);
+	/*	for(CollisionSquare cs : colliders) {
+			cs.render(g, c);
+		}*/
+		
+		//rp
+//		g.setColor(Color.blue);
+//		g.fillRect((int)(rp.getX()*tileRatio - c.getX()),(int)(rp.getY()*tileRatio - c.getY()),20,20);
+		//md
+//		g.setColor(Color.red);
+//		g.fillRect((int)(md.getX()*tileRatio - c.getX()),(int)(md.getY()*tileRatio - c.getY()),20,20);
+		//goal
+//		g.setColor(Color.green);
+//		g.fillRect((int)(goalDestination.getX()*tileRatio - c.getX()),(int)(goalDestination.getY()*tileRatio - c.getY()),20,20);
+		
+	}
+	
+	
+	private void rotateImage(Graphics2D g,Camera camera, double tileRatio) {
+		AffineTransform trans = new AffineTransform();
+		trans.rotate(angle,(int)(rp.getX()*tileRatio - camera.getX()),(int)(rp.getY()*tileRatio - camera.getY()));
+		AffineTransform old = g.getTransform();
+		g.transform(trans);
+		g.drawImage(sprites[currentSpritePointer], 
+				(int)(rp.getX()*tileRatio- camera.getX()- imageOffsetX*tileRatio),
+				(int)(rp.getY()*tileRatio-camera.getY()-imageOffsetY*tileRatio),
+				(int)(imageWidth*tileRatio),
+				(int)(imageHeight*tileRatio),null);
+		g.setTransform(old);
+	}
+	
+	
 	
 	
 	public boolean checkIfInViewport(Camera c) {

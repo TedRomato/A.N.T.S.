@@ -15,6 +15,7 @@ import gameObjectClasses.LivingObject;
 import gameObjectClasses.Tree;
 import handlers.Animated;
 import handlers.ContentArray;
+import interfacePackage.Game;
 
 //Location is set of gameObjects and grid
 //Location is part of world
@@ -37,16 +38,17 @@ public class Location {
 	public BufferedImage bg;
 	
 	public Location() {
+		
+		
 		grid = new Grid(100,100);
 		Tree t = new Tree(4550 ,grid);
 		Tree t2 = new Tree(2780 ,grid);
 		Tree t3 = new Tree(1630 ,grid);
 		Tree t4 = new Tree(8020 ,grid);
-	//	Lake l = new Lake(3500, grid);
-		Ant a = new Ant(new Point(500,500), 0.02);
+		Ant a = new Ant(new Point(100,100));
 
 
-
+		//TODO: Make selected objects array - > make rectangle mouse selection - > only selected ants listen to new commands
 		
 		livingObjects = new ContentArray(10);
 		gridSnappingObjects = new ContentArray(10);
@@ -72,6 +74,11 @@ public class Location {
 		updateAnimation();
 		updateLivingObjects();
 	}
+	/*
+	private void updateGoalDestination() {
+		
+	}
+	*/
 	
 	private void updateAnimation() {
 		int objectsHandled = 0;
