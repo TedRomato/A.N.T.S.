@@ -44,7 +44,7 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 	
 	public static double screenRatio;
 	
-	Camera camera;
+	public static Camera camera;
 	
 	Grid grid;
 	Tile t;
@@ -181,8 +181,8 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		input.setCursorX(e.getXOnScreen());
-		input.setCursorY(e.getYOnScreen());
+		input.setCursorX(e.getXOnScreen(), camera);
+		input.setCursorY(e.getYOnScreen(), camera);
 		
 	}
 

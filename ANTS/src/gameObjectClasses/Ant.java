@@ -15,7 +15,7 @@ public class Ant extends LivingObject implements Animated{
 	int animationTimer = 0;
 
 	public Ant(Point p) {
-		super(p, 0, -10, 2);
+		super(p , 1);
 		makeMainCollider(1);
 		addCollisionSquare(0, 30, 0.8);
 		addCollisionSquare(0, -30, 0.8);
@@ -25,6 +25,9 @@ public class Ant extends LivingObject implements Animated{
 		//sets image offset and side ratio
 		setImageScale(2.5,2.5); //height width
 		setImageOffset(1.25, 1.25); // x y
+		
+		setNewGoalDestination(new Point(100,100));
+
 		
 		//loading images
 		try {
@@ -37,6 +40,7 @@ public class Ant extends LivingObject implements Animated{
 			e.printStackTrace();
 		}
 	}
+	
 
 	@Override
 	public void render(Graphics2D g, Camera c) {
@@ -46,20 +50,26 @@ public class Ant extends LivingObject implements Animated{
 
 	@Override
 	public void updateAnimation() {
-		animationTimer ++;
-		if(animationTimer > 75) {
+		if(!moving) {
 			currentSpritePointer = 0;
-		}else if(animationTimer > 50) {
-			currentSpritePointer = 2;
-		}else if(animationTimer > 25) {
-			currentSpritePointer = 0;
+
+		}else {
+			animationTimer ++;
+			if(animationTimer > 75) {
+				currentSpritePointer = 0;
+			}else if(animationTimer > 50) {
+				currentSpritePointer = 2;
+			}else if(animationTimer > 25) {
+				currentSpritePointer = 0;
+			}
+			else{
+				currentSpritePointer = 1;
+			}
+			if(animationTimer > 100) {
+				animationTimer = 0;
+			}
 		}
-		else{
-			currentSpritePointer = 1;
-		}
-		if(animationTimer > 100) {
-			animationTimer = 0;
-		}
+		
 	}
 
 	

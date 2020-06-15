@@ -19,12 +19,37 @@ public class Point {
 	}
 	
 	public double getAngleFrom(Point other) {
-		
-		if(other.getX() > this.getX()) {
-			return 2*Math.PI - Math.acos(( other.getY() - y )/getDistanceFromPoint(other));
+		double distance = getDistanceFromPoint(other);
+		double xD = x-other.getX();
+		double yD = y-other.getY();
+		if(xD > 0) {
+			if(yD < 0) {
+				return Math.acos(-yD/distance);
+			}
+			if(yD > 0) {
+				return Math.PI/2 + Math.acos(xD/distance);
+			}else {
+				return Math.PI/2;
+			}
+		}
+		if(xD < 0) {
+			if(yD > 0) {
+				return Math.PI + Math.acos(yD/distance);
+			}
+			if(yD < 0) {
+				return Math.PI*3/2 + Math.acos(-xD/distance);
+			}else {
+				return Math.PI*3/2;
+			}
+		}else {
+			if(yD > 0) {
+				return Math.PI;
+			}else {
+				return 0;
+			}
 		}
 		
-		return Math.acos(( other.getY() - y )/getDistanceFromPoint(other));
+		
 	}
 	
 	public double getDistanceFromPoint(Point other) {
