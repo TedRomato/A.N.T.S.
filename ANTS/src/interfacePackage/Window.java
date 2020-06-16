@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 public class Window extends JFrame implements KeyListener{
 	Game game;
 	public Window() {
+		//ahojky sdfghjkl
 		//window set up
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setResizable(false);

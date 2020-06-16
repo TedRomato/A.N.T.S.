@@ -1,6 +1,9 @@
 package gameObjectClasses;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import handlers.Camera;
 
 public class Item extends GridSnappingObject{
 	
@@ -12,8 +15,10 @@ public class Item extends GridSnappingObject{
 	
 	State currentState = State.Laying;
 	
+	
+	
 	@Override
-	public void render(Graphics g) {
+	public void render(Graphics2D g, Camera c) {
 		switch(currentState) {
 			case Laying:
 				//render image

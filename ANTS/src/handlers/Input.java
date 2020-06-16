@@ -1,14 +1,19 @@
 package handlers;
 
+import interfacePackage.Game;
+import world.Tile;
+
 public class Input {
 	char[] pressedChars = new char[5];
 	char blank;
 	boolean leftMousePressed = false;
 	boolean rightMousePressed = false;
 	int CursorX, CursorY;
+	int CursorXOnMap, CursorYOnMap;
 	public enum WheelMove{DOWN,NONE,UP}
 	WheelMove move;
 	
+	//
 	public boolean checkIfKeyPressed(char key) {
 		for(char chars : pressedChars) {
 			if(key == chars) {
@@ -71,16 +76,30 @@ public class Input {
 		return CursorX;
 	}
 
-	public void setCursorX(int cursorX) {
+	public void setCursorX(int cursorX, Camera c) {
 		CursorX = cursorX;
+		CursorXOnMap = (int) (c.getX()/(double)c.getTileRenderSize()*(double)Tile.tileSideLenght + (double)cursorX/(double)c.getTileRenderSize()*(double)Tile.tileSideLenght);
+
 	}
+	
+	public int getCursorXOnMap() {
+		return CursorXOnMap;
+	}
+
 
 	public int getCursorY() {
 		return CursorY;
 	}
 
-	public void setCursorY(int cursorY) {
+	public void setCursorY(int cursorY, Camera c) {
 		CursorY = cursorY;
+		CursorYOnMap = (int) (c.getY()/(double)c.getTileRenderSize()*(double)Tile.tileSideLenght + (double)cursorY/(double)c.getTileRenderSize()*(double)Tile.tileSideLenght);
+
+		
+	}
+	
+	public int getCursorYOnMap() {
+		return CursorYOnMap;
 	}
 
 	public WheelMove getMove() {

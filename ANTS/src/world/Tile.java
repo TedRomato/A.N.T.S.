@@ -21,7 +21,6 @@ public class Tile {
 
 	//renderStuff
 	Color colorUsed = Color.BLACK;
-	BufferedImage image;
 	int tileRenderCoordX, tileRenderCoordY;
 	int tileRenderSide = tileSideLenght;
 	

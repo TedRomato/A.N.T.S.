@@ -7,9 +7,20 @@ import world.Grid;
 import world.Location;
 import world.Tile;
 
+//This class handles viewport. 
+//How big things are rendered, and where are they rendered
+//you can move camera to see different parts of map (camera mover) 
+//you can zoom to see more stuff, or less but have bigger detail 
+
+
+//How it works - > camera is assigned loacationToObserve
+//It sets its render borders and handles only objects inside of
+//those borders to save some cpu
+//It renders other objects accordingly to camera scale and camera position
+
 
 public class Camera {
-	int x = 500, y = 500; 
+	int x = 0, y = 0; 
 	int width, height;
 	double scale = 0; 
 	int[] zoomRange = new int[] {-1,1};
@@ -62,6 +73,19 @@ public class Camera {
 		 }
 	}
 	
+	public void renderAllObjects(Graphics2D g) {
+		int objectsHandled = 0;
+		for(int i = 0; i < locationObserved.objectsToRender.getArr().length; i++) {
+			if(locationObserved.objectsToRender.getArr()[i] != -1) {
+				locationObserved.objectsInLocation[locationObserved.objectsToRender.getArr()[i]].render(g, this);
+				objectsHandled++;
+				if(objectsHandled >= locationObserved.objectsToRender.getContents()) {
+					return;
+				}
+			}
+		}
+	}
+	/*
 	public void renderGridSnappingObjects(Graphics2D g) {
 		int objectsHandled = 0;
 		for(int i = 0; i < locationObserved.gridSnappingObjects.getArr().length; i++) {
@@ -74,6 +98,7 @@ public class Camera {
 			}
 		}
 	}
+	*/
 	
 	
 	public void move(int x, int y) {

@@ -4,6 +4,12 @@ import java.awt.Color;
 
 import handlers.Camera;
 
+//Container for Tile
+//Can grant acces to Tile at mouse coords
+//acces to size of the grid
+//to width in tiles (columns) and height (rows) 
+
+
 public class Grid {
 	private int gridColumns, gridRows;
 	private int mapSize;
