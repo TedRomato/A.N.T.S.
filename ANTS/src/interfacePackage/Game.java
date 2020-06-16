@@ -176,8 +176,8 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		input.setCursorX(e.getXOnScreen(), camera);
+		input.setCursorY(e.getYOnScreen(), camera);
 	}
 
 	@Override
