@@ -35,6 +35,12 @@ public class ContentArray {
 		
 	}
 	
+	public void resetAray() {
+		for(int i = 0; i < arr.length; i++) {
+			arr[i] = -1;
+		}
+	}
+	
 	private void initializeArray(int len) {
 		arr = new int[len];
 		for(int i = 0; i < len; i++) {

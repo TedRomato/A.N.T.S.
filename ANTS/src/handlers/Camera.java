@@ -115,9 +115,10 @@ public class Camera {
 		if(moveInRange(this.x+x,locationObserved.getGrid().getGridColumns()*tileRenderSize, maxDistanceFromBorder,width)) {
 			this.x += x;
 		}
+		
 		updateCameraBorders();
 		setTileRender();
-
+		
 	}
 		
 	

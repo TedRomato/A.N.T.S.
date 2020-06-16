@@ -17,6 +17,7 @@ public class Input {
 	boolean selectionRectActive = false;
 	boolean selectNow = false;
 	int selectionRectX, selectionRectY, selectionRectX2, selectionRectY2;
+	int topLeftSelectX,  topLeftSelectY,  selectHeight,  selectWidth;
 	public enum WheelMove{DOWN,NONE,UP};
 	WheelMove move;
 	
@@ -80,9 +81,6 @@ public class Input {
 	}
 	
 	public void handleSelectionRect() {
-		
-		System.out.println("1 x: " + selectionRectX + "  y : " + selectionRectY);
-		System.out.println("2 x: " + selectionRectX2 + "  y : " + selectionRectY2);
 
 		
 		if(!selectionRectActive && isLeftMousePressed()) {
@@ -101,11 +99,49 @@ public class Input {
 			selectionRectY2 = CursorYOnMap;
 		}
 		
+		updateSelectionRectRender();
+	}
+	
+	private void updateSelectionRectRender() {
+		if(selectNow) {
+			topLeftSelectX = 0;
+			topLeftSelectY = 0;
+			selectHeight = 0;
+			selectWidth = 0;
+		}else {
+			if(selectionRectX > selectionRectX2) {
+				topLeftSelectX = selectionRectX2;
+				selectWidth = selectionRectX - selectionRectX2;
+			}else {
+				topLeftSelectX = selectionRectX;
+				selectWidth = selectionRectX2 - selectionRectX;
+			}
+			
+			if(selectionRectY > selectionRectY2) {
+				topLeftSelectY = selectionRectY2;
+				selectHeight = selectionRectY - selectionRectY2;
+			}else {
+				topLeftSelectY = selectionRectY;
+				selectHeight = selectionRectY2 - selectionRectY;
+			}
+		}
+		
 	}
 	
 	public boolean checkIfInsideSelectionRect(Point p) {
 		if(p.getX() > selectionRectX && p.getX() < selectionRectX2) {
 			if(p.getY() > selectionRectY && p.getY() < selectionRectY2) {
+				return true;
+			}
+			if(p.getY() < selectionRectY && p.getY() > selectionRectY2) {
+				return true;
+			}
+		}
+		else if(p.getX() < selectionRectX && p.getX() > selectionRectX2) {
+			if(p.getY() > selectionRectY && p.getY() < selectionRectY2) {
+				return true;
+			}
+			if(p.getY() < selectionRectY && p.getY() > selectionRectY2) {
 				return true;
 			}
 		}
@@ -117,8 +153,8 @@ public class Input {
 		if(selectionRectActive) {
 			double tileRatio = (double)c.getTileRenderSize()/(double)Tile.tileSideLenght;
 			g.setColor(Color.green);
-			g.drawRect((int)(selectionRectX*tileRatio - c.getX()),(int)(selectionRectY*tileRatio - c.getY())
-					,(int)((selectionRectX2 - selectionRectX)*tileRatio),(int)((selectionRectY2 - selectionRectY)*tileRatio));
+			g.drawRect((int)(topLeftSelectX*tileRatio - c.getX()),(int)(topLeftSelectY*tileRatio - c.getY())
+					,(int)(selectWidth*tileRatio),(int)(selectHeight*tileRatio));
 		}
 		
 	}

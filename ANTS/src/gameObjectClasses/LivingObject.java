@@ -20,7 +20,6 @@ public abstract class LivingObject extends GameObject{
 	double angle;
 	double testingAngleToRotate = 0.02;
 	boolean distanceDone = false;
-	boolean isSelected = false;
 
 	public LivingObject(Point rp, double vel) {
 		this.rp = rp;
@@ -146,10 +145,7 @@ public abstract class LivingObject extends GameObject{
 		double tileRatio = (double)c.getTileRenderSize()/(double)Tile.tileSideLenght;
 
 		rotateImage(g, c, tileRatio);
-		if(isSelected) {
-			g.setColor(Color.green);
-			g.fillRect((int)(rp.getX()*tileRatio - c.getX()) - 5,(int)(rp.getY()*tileRatio - c.getY()) - 5,10,10);
-		}
+		
 		// Colliders render
 	/*	g.setColor(Color.RED);
 		for(CollisionSquare cs : colliders) {
@@ -206,14 +202,7 @@ public abstract class LivingObject extends GameObject{
 		this.rp = rp;
 	}
 	
-	public boolean isSelected() {
-		return isSelected;
-	}
-
-
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
-	}
+	
 	
 	
 }
