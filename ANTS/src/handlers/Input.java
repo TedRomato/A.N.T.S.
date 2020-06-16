@@ -1,5 +1,9 @@
 package handlers;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+
+import gameObjectClasses.Point;
 import interfacePackage.Game;
 import world.Tile;
 
@@ -10,7 +14,10 @@ public class Input {
 	boolean rightMousePressed = false;
 	int CursorX, CursorY;
 	int CursorXOnMap, CursorYOnMap;
-	public enum WheelMove{DOWN,NONE,UP}
+	boolean selectionRectActive = false;
+	boolean selectNow = false;
+	int selectionRectX, selectionRectY, selectionRectX2, selectionRectY2;
+	public enum WheelMove{DOWN,NONE,UP};
 	WheelMove move;
 	
 	//
@@ -72,6 +79,50 @@ public class Input {
 		}
 	}
 	
+	public void handleSelectionRect() {
+		
+		System.out.println("1 x: " + selectionRectX + "  y : " + selectionRectY);
+		System.out.println("2 x: " + selectionRectX2 + "  y : " + selectionRectY2);
+
+		
+		if(!selectionRectActive && isLeftMousePressed()) {
+			selectionRectActive = true;
+			selectionRectX = CursorXOnMap;
+			selectionRectY = CursorYOnMap;
+		}
+		else if(selectionRectActive && isLeftMousePressed()) {
+			selectionRectX2 = CursorXOnMap;
+			selectionRectY2 = CursorYOnMap;
+		}
+		else if(selectionRectActive && !isLeftMousePressed()) {
+			selectionRectActive = false;
+			selectNow = true;
+			selectionRectX2 = CursorXOnMap;
+			selectionRectY2 = CursorYOnMap;
+		}
+		
+	}
+	
+	public boolean checkIfInsideSelectionRect(Point p) {
+		if(p.getX() > selectionRectX && p.getX() < selectionRectX2) {
+			if(p.getY() > selectionRectY && p.getY() < selectionRectY2) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void renderSelectionRect(Graphics2D g, Camera c) {
+	
+		if(selectionRectActive) {
+			double tileRatio = (double)c.getTileRenderSize()/(double)Tile.tileSideLenght;
+			g.setColor(Color.green);
+			g.drawRect((int)(selectionRectX*tileRatio - c.getX()),(int)(selectionRectY*tileRatio - c.getY())
+					,(int)((selectionRectX2 - selectionRectX)*tileRatio),(int)((selectionRectY2 - selectionRectY)*tileRatio));
+		}
+		
+	}
+	
 	public int getCursorX() {
 		return CursorX;
 	}
@@ -119,6 +170,16 @@ public class Input {
 	}
 	public void setRightMousePressed(boolean rightMousePressed) {
 		this.rightMousePressed = rightMousePressed;
-	};
+	}
+	
+	public boolean isSelectNow() {
+		return selectNow;
+	}
+	public void setSelectNow(boolean selectNow) {
+		this.selectNow = selectNow;
+	}
+
+	
+	
 	
 }

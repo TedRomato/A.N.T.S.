@@ -10,7 +10,6 @@ import gameObjectClasses.Point;
 import gameObjectClasses.Ant;
 import gameObjectClasses.GameObject;
 import gameObjectClasses.GridSnappingObject;
-import gameObjectClasses.Lake;
 import gameObjectClasses.LivingObject;
 import gameObjectClasses.Tree;
 import handlers.Animated;
@@ -33,6 +32,7 @@ public class Location {
 	public ContentArray animated;
 	public ContentArray objectsToRender;
 	public ContentArray livingObjects;
+	public ContentArray selectedObjects;
 	Grid grid;
 	boolean isActive = false;
 	public BufferedImage bg;
@@ -49,7 +49,7 @@ public class Location {
 
 
 		//TODO: Make selected objects array - > make rectangle mouse selection - > only selected ants listen to new commands
-		
+		selectedObjects = new ContentArray(10);
 		livingObjects = new ContentArray(10);
 		gridSnappingObjects = new ContentArray(10);
 		animated = new ContentArray(10);
@@ -73,12 +73,50 @@ public class Location {
 	public void updateLocation() {
 		updateAnimation();
 		updateLivingObjects();
+		selectLivingObjects();
+		handleSelectedObjects();
 	}
 	/*
 	private void updateGoalDestination() {
 		
 	}
 	*/
+	
+	private void handleSelectedObjects() {
+		if(Game.input.isRightMousePressed()) {
+			int objectsHandled = 0;
+			for(int i = 0; i < selectedObjects.getArr().length; i++) {
+				if(selectedObjects.getArr()[i] != -1) {
+					//TODO predelat do metod - nejak univerzalnejs
+					((LivingObject) objectsInLocation[selectedObjects.getArr()[i]]).setNewGoalDestination(new Point(Game.input.getCursorXOnMap(),Game.input.getCursorYOnMap()));;				
+
+					if(objectsHandled == selectedObjects.getContents()) {
+						return;
+					}
+				}
+			}
+		}
+	}
+	
+	private void selectLivingObjects() {
+		if(Game.input.isSelectNow()) {
+			Game.input.setSelectNow(false);
+			int objectsHandled = 0;
+			for(int i = 0; i < livingObjects.getArr().length; i++) {
+				if(livingObjects.getArr()[i] != -1) {
+					//TODO predelat do metod - nejak univerzalnejs
+					if(Game.input.checkIfInsideSelectionRect(((LivingObject) objectsInLocation[livingObjects.getArr()[i]]).getRp()))  {
+						selectedObjects.addToHandlerArr(livingObjects.getArr()[i]);
+						((LivingObject) objectsInLocation[livingObjects.getArr()[i]]).setSelected(true);				
+					}
+					if(objectsHandled == livingObjects.getContents()) {
+						return;
+					}
+				}
+			}
+		}
+		
+	}
 	
 	private void updateAnimation() {
 		int objectsHandled = 0;
@@ -113,6 +151,8 @@ public class Location {
 				
 				if(go instanceof LivingObject) {
 					livingObjects.addToHandlerArr(i);
+					//TODO only test
+					selectedObjects.addToHandlerArr(i);
 				}
 				
 				if(go instanceof GridSnappingObject) {
