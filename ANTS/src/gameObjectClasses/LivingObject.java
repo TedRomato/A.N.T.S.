@@ -20,6 +20,7 @@ public abstract class LivingObject extends GameObject{
 	double angle;
 	double testingAngleToRotate = 0.02;
 	boolean distanceDone = false;
+
 	public LivingObject(Point rp, double vel) {
 		this.rp = rp;
 		this.md = new DependentPoint(rp.getX(), rp.getY() - 50, rp);
@@ -36,10 +37,7 @@ public abstract class LivingObject extends GameObject{
 		//ant decides if it still needs to be moving to reach goal destination
 		decideIfContinueMoving();
 		
-		//If right mouse pressed ant rotates to goal location
-		if(Game.input.isRightMousePressed()) {
-			setNewGoalDestination(new Point(Game.input.getCursorXOnMap(), Game.input.getCursorYOnMap()));
-		}
+
 	}
 	
 	protected void rotateToPoint(Point toRotateTo) {
@@ -133,7 +131,7 @@ public abstract class LivingObject extends GameObject{
 		}
 	}
 	
-	protected void setNewGoalDestination(Point p) {
+	public void setNewGoalDestination(Point p) {
 		goalDestination = p;
 		moving = true;
 		rotateToPoint(goalDestination);
@@ -144,9 +142,10 @@ public abstract class LivingObject extends GameObject{
 		double tileRatio = (double)c.getTileRenderSize()/(double)Tile.tileSideLenght;
 
 		rotateImage(g, c, tileRatio);
+		
 		// Colliders render
-		g.setColor(Color.RED);
-	/*	for(CollisionSquare cs : colliders) {
+	/*	g.setColor(Color.RED);
+		for(CollisionSquare cs : colliders) {
 			cs.render(g, c);
 		}*/
 		
@@ -189,5 +188,22 @@ public abstract class LivingObject extends GameObject{
 	public void setAngle(int angle) {
 		this.angle = angle;
 	}
+
+
+	public Point getRp() {
+		return rp;
+	}
+
+
+	public void setRp(Point rp) {
+		this.rp = rp;
+	}
+	
+	public CollisionSquare[] getColliders() {
+		return colliders;
+	}
+	
+	
+	
 	
 }

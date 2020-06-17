@@ -3,6 +3,8 @@ package handlers;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+
+import interfacePackage.Game;
 import world.Grid;
 import world.Location;
 import world.Tile;
@@ -85,6 +87,11 @@ public class Camera {
 			}
 		}
 	}
+	
+	public void renderSelectionRect(Graphics2D g) {
+		Game.input.renderSelectionRect(g, this);
+	}
+	
 	/*
 	public void renderGridSnappingObjects(Graphics2D g) {
 		int objectsHandled = 0;
@@ -108,9 +115,10 @@ public class Camera {
 		if(moveInRange(this.x+x,locationObserved.getGrid().getGridColumns()*tileRenderSize, maxDistanceFromBorder,width)) {
 			this.x += x;
 		}
+		
 		updateCameraBorders();
 		setTileRender();
-
+		
 	}
 		
 	

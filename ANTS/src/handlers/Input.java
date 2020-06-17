@@ -1,6 +1,10 @@
 package handlers;
 
-import interfacePackage.Game;
+import java.awt.Color;
+import java.awt.Graphics2D;
+
+import gameObjectClasses.CollisionSquare;
+import gameObjectClasses.Point;
 import world.Tile;
 
 public class Input {
@@ -10,7 +14,12 @@ public class Input {
 	boolean rightMousePressed = false;
 	int CursorX, CursorY;
 	int CursorXOnMap, CursorYOnMap;
-	public enum WheelMove{DOWN,NONE,UP}
+	boolean selectionRectActive = false;
+	boolean selectNow = false;
+	CollisionSquare selectionRect = new CollisionSquare(0,0, 0,new Point(0,0));
+	int selectionRectX, selectionRectY, selectionRectX2, selectionRectY2;
+//	int topLeftSelectX,  topLeftSelectY,  selectHeight,  selectWidth;
+	public enum WheelMove{DOWN,NONE,UP};
 	WheelMove move;
 	
 	//
@@ -72,6 +81,76 @@ public class Input {
 		}
 	}
 	
+	public void handleSelectionRect(Camera c) {
+
+		
+		if(!selectionRectActive && isLeftMousePressed()) {
+			selectionRectActive = true;
+			selectionRectX = CursorXOnMap;
+			selectionRectY = CursorYOnMap;
+		}
+		else if(selectionRectActive && isLeftMousePressed()) {
+			selectionRectX2 = CursorXOnMap;
+			selectionRectY2 = CursorYOnMap;
+		}
+		else if(selectionRectActive && !isLeftMousePressed()) {
+			selectionRectActive = false;
+			selectNow = true;
+			selectionRectX2 = CursorXOnMap;
+			selectionRectY2 = CursorYOnMap;
+		}
+		
+		updateSelectionRectRender(c);
+	}
+	
+	private void updateSelectionRectRender(Camera c) {
+		
+		if(selectionRectX > selectionRectX2) {
+			selectionRect.setX(selectionRectX2);
+			selectionRect.setWidth((double)(selectionRectX - selectionRectX2)/Tile.tileSideLenght);
+		}else {
+			selectionRect.setX(selectionRectX);
+			selectionRect.setWidth((double)(selectionRectX2 - selectionRectX)/Tile.tileSideLenght);
+		}
+		
+		if(selectionRectY > selectionRectY2) {
+			selectionRect.setY(selectionRectY2);
+			selectionRect.setHeight((double)(selectionRectY - selectionRectY2)/Tile.tileSideLenght);
+		}else {
+			selectionRect.setY(selectionRectY);
+			selectionRect.setHeight((double)(selectionRectY2 - selectionRectY)/Tile.tileSideLenght);
+		}
+		
+		
+	}
+	
+	public void restetSelectionRect() {
+		selectionRect.setX(0);
+		selectionRect.setY(0);
+		selectionRect.setWidth(0);
+		selectionRect.setHeight(0);;
+	}
+	
+	
+	public boolean checkIfInsideSelectionRect(CollisionSquare[] colliders) {
+		for(CollisionSquare cs : colliders) {
+			if(cs.checkCollision(this.selectionRect)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	public void renderSelectionRect(Graphics2D g, Camera c) {
+	
+		if(selectionRectActive) {
+			g.setColor(Color.green);
+			selectionRect.render(g, c);
+		}
+		
+	}
+	
 	public int getCursorX() {
 		return CursorX;
 	}
@@ -79,7 +158,6 @@ public class Input {
 	public void setCursorX(int cursorX, Camera c) {
 		CursorX = cursorX;
 		CursorXOnMap = (int) (c.getX()/(double)c.getTileRenderSize()*(double)Tile.tileSideLenght + (double)cursorX/(double)c.getTileRenderSize()*(double)Tile.tileSideLenght);
-
 	}
 	
 	public int getCursorXOnMap() {
@@ -94,7 +172,7 @@ public class Input {
 	public void setCursorY(int cursorY, Camera c) {
 		CursorY = cursorY;
 		CursorYOnMap = (int) (c.getY()/(double)c.getTileRenderSize()*(double)Tile.tileSideLenght + (double)cursorY/(double)c.getTileRenderSize()*(double)Tile.tileSideLenght);
-
+		
 		
 	}
 	
@@ -119,6 +197,16 @@ public class Input {
 	}
 	public void setRightMousePressed(boolean rightMousePressed) {
 		this.rightMousePressed = rightMousePressed;
-	};
+	}
+	
+	public boolean isSelectNow() {
+		return selectNow;
+	}
+	public void setSelectNow(boolean selectNow) {
+		this.selectNow = selectNow;
+	}
+
+	
+	
 	
 }
