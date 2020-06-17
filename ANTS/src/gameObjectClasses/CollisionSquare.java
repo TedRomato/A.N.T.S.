@@ -9,7 +9,7 @@ import world.Tile;
 public class CollisionSquare {
 	double x,y;
 	Point rp;
-	double side;
+	double width, height;
 	
 	public CollisionSquare(double rpx, double rpy, double side, Point mainPoint) {
 		if(mainPoint.getX() == rpx && mainPoint.getY() == rpy) {
@@ -17,13 +17,15 @@ public class CollisionSquare {
 		}else {
 			rp = new DependentPoint(rpx, rpy,mainPoint); 
 		}
-		this.side = side;
+		this.width = side;
+		this.height = side;
+
 		setXYToRP();
 	}
 	
 	public void setXYToRP() {
-		x = rp.getX()-(Tile.tileSideLenght*side/2);
-		y = rp.getY()-(Tile.tileSideLenght*side/2);
+		x = rp.getX()-(Tile.tileSideLenght*width/2);
+		y = rp.getY()-(Tile.tileSideLenght*height/2);
 	}
 	
 	public void rotateAround(Point mainPoint, double angleToRotate) {
@@ -36,14 +38,67 @@ public class CollisionSquare {
 		setXYToRP();
 	}
 	
+	public boolean checkCollision(CollisionSquare other) {
+		if(		this.getX() + this.getWidth()*Tile.tileSideLenght < other.getX() ||
+				this.getX() > other.getX() + other.getWidth()*Tile.tileSideLenght) {
+			return false;
+		}
+		if(		this.getY() + this.getHeight()*Tile.tileSideLenght < other.getY() ||
+				this.getY() > other.getY() + other.getHeight()*Tile.tileSideLenght) {
+			return false;
+		}
+		return true;
+		
+	}
+	
+	
 	
 	public Point getRp() {
 		return rp;
 	}
 	
 	public void render(Graphics g, Camera camera) {
-		g.drawRect((int)(x*camera.getTileRenderSize()/Tile.tileSideLenght - camera.getX()), (int)(y*camera.getTileRenderSize()/Tile.tileSideLenght - camera.getY()),(int)(camera.getTileRenderSize()*side) - 1, (int)(camera.getTileRenderSize()*side) - 1);
+		g.drawRect((int)(x*camera.getTileRenderSize()/Tile.tileSideLenght - camera.getX()), (int)(y*camera.getTileRenderSize()/Tile.tileSideLenght - camera.getY()),(int)(camera.getTileRenderSize()*width) - 1, (int)(camera.getTileRenderSize()*height) - 1);
 	}
+	
+
+	public double getX() {
+		return x;
+	}
+
+	public void setX(double x) {
+		this.x = x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public void setY(double y) {
+		this.y = y;
+	}
+
+	public double getWidth() {
+		return width;
+	}
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
+	public void setRp(Point rp) {
+		this.rp = rp;
+	}
+
+
 	
 
 	

@@ -37,10 +37,7 @@ public abstract class LivingObject extends GameObject{
 		//ant decides if it still needs to be moving to reach goal destination
 		decideIfContinueMoving();
 		
-		//If right mouse pressed ant rotates to goal location
-/*		if(Game.input.isRightMousePressed()) {
-			setNewGoalDestination(new Point(Game.input.getCursorXOnMap(), Game.input.getCursorYOnMap()));
-		}*/
+
 	}
 	
 	protected void rotateToPoint(Point toRotateTo) {
@@ -200,6 +197,10 @@ public abstract class LivingObject extends GameObject{
 
 	public void setRp(Point rp) {
 		this.rp = rp;
+	}
+	
+	public CollisionSquare[] getColliders() {
+		return colliders;
 	}
 	
 	

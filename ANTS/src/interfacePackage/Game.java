@@ -101,7 +101,7 @@ public class Game extends JPanel implements MouseListener, MouseWheelListener, M
 	//	update game values and positions
 	public void tick(){
 		l.updateLocation();
-		input.handleSelectionRect();
+		input.handleSelectionRect(camera);
 		camera.handleCameraMoving(input.getCursorX(),input.getCursorY());
 
 	}

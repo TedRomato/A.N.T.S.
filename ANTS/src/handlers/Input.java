@@ -3,8 +3,8 @@ package handlers;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import gameObjectClasses.CollisionSquare;
 import gameObjectClasses.Point;
-import interfacePackage.Game;
 import world.Tile;
 
 public class Input {
@@ -16,8 +16,9 @@ public class Input {
 	int CursorXOnMap, CursorYOnMap;
 	boolean selectionRectActive = false;
 	boolean selectNow = false;
+	CollisionSquare selectionRect = new CollisionSquare(0,0, 0,new Point(0,0));
 	int selectionRectX, selectionRectY, selectionRectX2, selectionRectY2;
-	int topLeftSelectX,  topLeftSelectY,  selectHeight,  selectWidth;
+//	int topLeftSelectX,  topLeftSelectY,  selectHeight,  selectWidth;
 	public enum WheelMove{DOWN,NONE,UP};
 	WheelMove move;
 	
@@ -80,7 +81,7 @@ public class Input {
 		}
 	}
 	
-	public void handleSelectionRect() {
+	public void handleSelectionRect(Camera c) {
 
 		
 		if(!selectionRectActive && isLeftMousePressed()) {
@@ -99,62 +100,53 @@ public class Input {
 			selectionRectY2 = CursorYOnMap;
 		}
 		
-		updateSelectionRectRender();
+		updateSelectionRectRender(c);
 	}
 	
-	private void updateSelectionRectRender() {
-		if(selectNow) {
-			topLeftSelectX = 0;
-			topLeftSelectY = 0;
-			selectHeight = 0;
-			selectWidth = 0;
+	private void updateSelectionRectRender(Camera c) {
+		
+		if(selectionRectX > selectionRectX2) {
+			selectionRect.setX(selectionRectX2);
+			selectionRect.setWidth((double)(selectionRectX - selectionRectX2)/Tile.tileSideLenght);
 		}else {
-			if(selectionRectX > selectionRectX2) {
-				topLeftSelectX = selectionRectX2;
-				selectWidth = selectionRectX - selectionRectX2;
-			}else {
-				topLeftSelectX = selectionRectX;
-				selectWidth = selectionRectX2 - selectionRectX;
-			}
-			
-			if(selectionRectY > selectionRectY2) {
-				topLeftSelectY = selectionRectY2;
-				selectHeight = selectionRectY - selectionRectY2;
-			}else {
-				topLeftSelectY = selectionRectY;
-				selectHeight = selectionRectY2 - selectionRectY;
-			}
+			selectionRect.setX(selectionRectX);
+			selectionRect.setWidth((double)(selectionRectX2 - selectionRectX)/Tile.tileSideLenght);
 		}
+		
+		if(selectionRectY > selectionRectY2) {
+			selectionRect.setY(selectionRectY2);
+			selectionRect.setHeight((double)(selectionRectY - selectionRectY2)/Tile.tileSideLenght);
+		}else {
+			selectionRect.setY(selectionRectY);
+			selectionRect.setHeight((double)(selectionRectY2 - selectionRectY)/Tile.tileSideLenght);
+		}
+		
 		
 	}
 	
-	public boolean checkIfInsideSelectionRect(Point p) {
-		if(p.getX() > selectionRectX && p.getX() < selectionRectX2) {
-			if(p.getY() > selectionRectY && p.getY() < selectionRectY2) {
-				return true;
-			}
-			if(p.getY() < selectionRectY && p.getY() > selectionRectY2) {
-				return true;
-			}
-		}
-		else if(p.getX() < selectionRectX && p.getX() > selectionRectX2) {
-			if(p.getY() > selectionRectY && p.getY() < selectionRectY2) {
-				return true;
-			}
-			if(p.getY() < selectionRectY && p.getY() > selectionRectY2) {
-				return true;
-			}
-		}
-		return false;
+	public void restetSelectionRect() {
+		selectionRect.setX(0);
+		selectionRect.setY(0);
+		selectionRect.setWidth(0);
+		selectionRect.setHeight(0);;
 	}
 	
+	
+	public boolean checkIfInsideSelectionRect(CollisionSquare[] colliders) {
+		for(CollisionSquare cs : colliders) {
+			if(cs.checkCollision(this.selectionRect)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
 	public void renderSelectionRect(Graphics2D g, Camera c) {
 	
 		if(selectionRectActive) {
-			double tileRatio = (double)c.getTileRenderSize()/(double)Tile.tileSideLenght;
 			g.setColor(Color.green);
-			g.drawRect((int)(topLeftSelectX*tileRatio - c.getX()),(int)(topLeftSelectY*tileRatio - c.getY())
-					,(int)(selectWidth*tileRatio),(int)(selectHeight*tileRatio));
+			selectionRect.render(g, c);
 		}
 		
 	}
@@ -166,7 +158,6 @@ public class Input {
 	public void setCursorX(int cursorX, Camera c) {
 		CursorX = cursorX;
 		CursorXOnMap = (int) (c.getX()/(double)c.getTileRenderSize()*(double)Tile.tileSideLenght + (double)cursorX/(double)c.getTileRenderSize()*(double)Tile.tileSideLenght);
-
 	}
 	
 	public int getCursorXOnMap() {
@@ -181,7 +172,7 @@ public class Input {
 	public void setCursorY(int cursorY, Camera c) {
 		CursorY = cursorY;
 		CursorYOnMap = (int) (c.getY()/(double)c.getTileRenderSize()*(double)Tile.tileSideLenght + (double)cursorY/(double)c.getTileRenderSize()*(double)Tile.tileSideLenght);
-
+		
 		
 	}
 	

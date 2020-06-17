@@ -62,8 +62,8 @@ public class Location {
 		addObToLocation(t3);
 		addObToLocation(t4);
 		addObToLocation(a);
-		addObToLocation(a1);
-		addObToLocation(a2);
+	//	addObToLocation(a1);
+	//	addObToLocation(a2);
 
 
 
@@ -108,18 +108,21 @@ public class Location {
 		if(Game.input.isSelectNow()) {
 			selectedObjects.resetAray();
 			Game.input.setSelectNow(false);
+			
 			int objectsHandled = 0;
 			for(int i = 0; i < livingObjects.getArr().length; i++) {
 				if(livingObjects.getArr()[i] != -1) {
 					//TODO predelat do metod - nejak univerzalnejs
-					if(Game.input.checkIfInsideSelectionRect(((LivingObject) objectsInLocation[livingObjects.getArr()[i]]).getRp()))  {
+					if(Game.input.checkIfInsideSelectionRect(((LivingObject) objectsInLocation[livingObjects.getArr()[i]]).getColliders()))  {
 						selectedObjects.addToHandlerArr(livingObjects.getArr()[i]);
 					}
 					if(objectsHandled == livingObjects.getContents()) {
+						Game.input.restetSelectionRect();
 						return;
 					}
 				}
 			}
+			Game.input.restetSelectionRect();
 		}
 		
 	}
