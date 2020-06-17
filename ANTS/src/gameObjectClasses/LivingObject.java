@@ -18,7 +18,7 @@ public abstract class LivingObject extends GameObject{
 	double vel, velX, velY, xyRatio;
 	boolean moving = true, facingUp, facingLeft;
 	double angle;
-	double testingAngleToRotate = 0.02;
+	double testingAngleToRotate = 0.06;
 	boolean distanceDone = false;
 
 	public LivingObject(Point rp, double vel) {
@@ -37,7 +37,41 @@ public abstract class LivingObject extends GameObject{
 		//ant decides if it still needs to be moving to reach goal destination
 		decideIfContinueMoving();
 		
+		rotateSmoothlyToPont(goalDestination);
+		
 
+	}
+	
+	protected void rotateSmoothlyToPont(Point toRotateTo) {
+		if(moving) {
+			double[] angleDifference = getAngleDifferencRL(md.getAngleFrom(rp),toRotateTo.getAngleFrom(rp));
+			
+			if(angleDifference[0] > angleDifference[1]) {
+				rotate(-testingAngleToRotate);
+			}else {
+				rotate(testingAngleToRotate);
+			}
+		}
+		
+	}
+	
+	//returns two values --> difference of mainAngle and Secondary angle Clockwise and main and secondary angle counterClockwise 
+	private double[] getAngleDifferencRL(double mainAngle, double secondaryAngle) {
+		double right;
+		if(mainAngle <= secondaryAngle) {
+			right = secondaryAngle - mainAngle;
+		} else {
+			right = 2*Math.PI - mainAngle + secondaryAngle;
+		}
+		
+		double left;
+		if(mainAngle >= secondaryAngle) {
+			left = mainAngle - secondaryAngle;
+		} else {
+			left = 2*Math.PI - secondaryAngle + mainAngle;	
+		}
+		
+		return new double[] {right, left};
 	}
 	
 	protected void rotateToPoint(Point toRotateTo) {
@@ -134,7 +168,6 @@ public abstract class LivingObject extends GameObject{
 	public void setNewGoalDestination(Point p) {
 		goalDestination = p;
 		moving = true;
-		rotateToPoint(goalDestination);
 		
 	}
 	
