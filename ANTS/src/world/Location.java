@@ -13,6 +13,7 @@ import gameObjectClasses.GridSnappingObject;
 import gameObjectClasses.Item;
 import gameObjectClasses.LivingObject;
 import gameObjectClasses.Needle;
+import gameObjectClasses.OffGridObject;
 import gameObjectClasses.Tree;
 import handlers.Animated;
 import handlers.ContentArray;
@@ -52,7 +53,7 @@ public class Location {
 		Ant a = new Ant(new Point(100,100));
 		Ant a1 = new Ant(new Point(200,500));
 		Ant a2 = new Ant(new Point(600,200));
-		Needle needle = new Needle(0 ,grid);
+		Needle needle = new Needle(new Point(0,0));
 
 
 		//TODO: Make selected objects array - > make rectangle mouse selection - > only selected ants listen to new commands
@@ -162,22 +163,24 @@ public class Location {
 				objectsInLocation[i] = go;
 				
 				
-				if(go instanceof LivingObject) {
-					livingObjects.addToHandlerArr(i);
-					renderLayer2.addToHandlerArr(i);
+				if(go instanceof OffGridObject) {
+					if(go instanceof LivingObject) {
+						livingObjects.addToHandlerArr(i);
+						renderLayer2.addToHandlerArr(i);
+					}else if(go instanceof Item){
+						renderLayer1.addToHandlerArr(i);
 					}
+				}
+				
+				
 				
 				if(go instanceof GridSnappingObject) {
 					gridSnappingObjects.addToHandlerArr(i);
 					for(int x = 0; x < ((GridSnappingObject) go).getOccupiedTiles().length; x++) {
 						grid.getTiles()[((GridSnappingObject) go).getOccupiedTiles()[x]].assignContent(i);
 					}
+					renderLayer3.addToHandlerArr(i);
 					
-					if(go instanceof Item) {
-						renderLayer1.addToHandlerArr(i);
-					}else {
-						renderLayer3.addToHandlerArr(i);
-					}
 				}
 				
 				if(go instanceof Animated) {

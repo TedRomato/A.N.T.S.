@@ -9,20 +9,17 @@ import javax.imageio.ImageIO;
 import world.Grid;
 
 public class Needle extends Item{
-	public Needle(int baseTile, Grid g) {
-		this.baseTile = baseTile;
-		
-		
-		makeShape("0,0;");
-
-		setOccupiedTiles(g);
+	public Needle(Point p) {
+		super(p);
 		
 		//amount of images used
 		sprites = new BufferedImage[1];
 		
+		makeMainCollider(1);
+		
 		//sets image offset and side ratio
 		setImageScale(10, 10); //height width
-		setImageOffset(0.3,0); // x y
+		setImageOffset(0.45,0.58); // x y
 		
 		//loading images
 		try {

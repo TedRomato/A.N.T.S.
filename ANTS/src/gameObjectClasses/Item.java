@@ -6,7 +6,12 @@ import java.awt.Graphics2D;
 import handlers.Camera;
 import world.Tile;
 
-public abstract class Item extends GridSnappingObject{
+public abstract class Item extends OffGridObject{
+
+	public Item(Point point) {
+		super(point);
+		// TODO Auto-generated constructor stub
+	}
 
 	enum State{
 		Carried,

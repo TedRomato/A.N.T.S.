@@ -10,9 +10,8 @@ import handlers.Camera;
 import interfacePackage.Game;
 import world.Tile;
 
-public abstract class LivingObject extends GameObject{
-	CollisionSquare[] colliders = new CollisionSquare[0];
-	Point rp;
+public abstract class LivingObject extends OffGridObject{
+	
 	Point goalDestination;
 	DependentPoint md;
 	double vel, velX, velY, xyRatio;
@@ -22,7 +21,8 @@ public abstract class LivingObject extends GameObject{
 	boolean distanceDone = false;
 
 	public LivingObject(Point rp, double vel) {
-		this.rp = rp;
+		super(rp);
+
 		this.md = new DependentPoint(rp.getX(), rp.getY() - 50, rp);
 		this.vel = vel;
 		angle = md.getAngleFrom(rp);
@@ -96,10 +96,7 @@ public abstract class LivingObject extends GameObject{
 		}
 	}
 	
-	protected void makeMainCollider(double side) {
-		colliders = new CollisionSquare[1];
-		colliders[0] = new CollisionSquare(rp.getX(), rp.getY(), side, rp);
-	}
+	
 	
 	protected void updateAfterRotate(){
 		voidGetNewRatio();
@@ -149,15 +146,6 @@ public abstract class LivingObject extends GameObject{
 		}
 	}
 	
-	protected void addCollisionSquare(double offsetX, double offsetY, double side) {
-		CollisionSquare[] temp = colliders;
-		colliders = new CollisionSquare[temp.length+1];
-		for(int i = 0; i < temp.length; i++) {
-			colliders[i] = temp[i];
-		}
-		colliders[colliders.length - 1] = new CollisionSquare(rp.getX() - offsetX, rp.getY() - offsetY, side, rp);
-		
-	}
 	
 	protected void decideIfContinueMoving() {
 		if(goalDestination.getDistanceFromPoint(this.rp) < 2) {
@@ -176,12 +164,13 @@ public abstract class LivingObject extends GameObject{
 
 		rotateImage(g, c, tileRatio);
 		
+	
 		// Colliders render
-	/*	g.setColor(Color.RED);
-		for(CollisionSquare cs : colliders) {
-			cs.render(g, c);
-		}*/
-		
+		/*			g.setColor(Color.RED);
+					for(CollisionSquare cs : colliders) {
+						cs.render(g, camera);
+					}
+		*/
 		//rp
 //		g.setColor(Color.blue);
 //		g.fillRect((int)(rp.getX()*tileRatio - c.getX()),(int)(rp.getY()*tileRatio - c.getY()),20,20);
@@ -223,18 +212,9 @@ public abstract class LivingObject extends GameObject{
 	}
 
 
-	public Point getRp() {
-		return rp;
-	}
 
-
-	public void setRp(Point rp) {
-		this.rp = rp;
-	}
 	
-	public CollisionSquare[] getColliders() {
-		return colliders;
-	}
+	
 	
 	
 	
