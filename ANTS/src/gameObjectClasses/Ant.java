@@ -31,9 +31,9 @@ public class Ant extends LivingObject implements Animated{
 		
 		//loading images
 		try {
-			sprites[0] = ImageIO.read(new File("ANTS/src/AntSprites/Ant1.png"));
-			sprites[1] = ImageIO.read(new File("ANTS/src/AntSprites/Ant2.png"));
-			sprites[2] = ImageIO.read(new File("ANTS/src/AntSprites/Ant3.png"));
+			sprites[0] = ImageIO.read(new File("src/AntSprites/Ant1.png"));
+			sprites[1] = ImageIO.read(new File("src/AntSprites/Ant2.png"));
+			sprites[2] = ImageIO.read(new File("src/AntSprites/Ant3.png"));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

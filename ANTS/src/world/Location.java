@@ -10,7 +10,9 @@ import gameObjectClasses.Point;
 import gameObjectClasses.Ant;
 import gameObjectClasses.GameObject;
 import gameObjectClasses.GridSnappingObject;
+import gameObjectClasses.Item;
 import gameObjectClasses.LivingObject;
+import gameObjectClasses.Needle;
 import gameObjectClasses.Tree;
 import handlers.Animated;
 import handlers.ContentArray;
@@ -18,7 +20,7 @@ import interfacePackage.Game;
 
 //Location is set of gameObjects and grid
 //Location is part of world
-//You can add new Gameobjects to location, and make them 
+//You can add new Game objects to location, and make them 
 //do stuff they are supposed to do an interact with other
 //game objects
 
@@ -30,7 +32,9 @@ public class Location {
 	public GameObject[] objectsInLocation = new GameObject[500];
 	public ContentArray gridSnappingObjects;
 	public ContentArray animated;
-	public ContentArray objectsToRender;
+	public ContentArray renderLayer1;
+	public ContentArray renderLayer2;
+	public ContentArray renderLayer3;
 	public ContentArray livingObjects;
 	public ContentArray selectedObjects;
 	Grid grid;
@@ -48,7 +52,7 @@ public class Location {
 		Ant a = new Ant(new Point(100,100));
 		Ant a1 = new Ant(new Point(200,500));
 		Ant a2 = new Ant(new Point(600,200));
-
+		Needle needle = new Needle(0 ,grid);
 
 
 		//TODO: Make selected objects array - > make rectangle mouse selection - > only selected ants listen to new commands
@@ -56,19 +60,20 @@ public class Location {
 		livingObjects = new ContentArray(10);
 		gridSnappingObjects = new ContentArray(10);
 		animated = new ContentArray(10);
-		objectsToRender = new ContentArray(15);
-		addObToLocation(t);
-		addObToLocation(t2);
+		renderLayer1 = new ContentArray(10);
+		renderLayer2 = new ContentArray(10);
+		renderLayer3 = new ContentArray(10); 
 		addObToLocation(t3);
 		addObToLocation(t4);
 		addObToLocation(a);
-	//	addObToLocation(a1);
-	//	addObToLocation(a2);
+		addObToLocation(a1);
+		addObToLocation(a2);
+		addObToLocation(needle);
 
 
 
 		try {
-			bg = ImageIO.read(new File("ANTS/src/bg/Background.png"));
+			bg = ImageIO.read(new File("src/bg/Background.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -156,16 +161,22 @@ public class Location {
 			if(objectsInLocation[i] == null) {
 				objectsInLocation[i] = go;
 				
-				objectsToRender.addToHandlerArr(i);
 				
 				if(go instanceof LivingObject) {
 					livingObjects.addToHandlerArr(i);
+					renderLayer2.addToHandlerArr(i);
 					}
 				
 				if(go instanceof GridSnappingObject) {
 					gridSnappingObjects.addToHandlerArr(i);
 					for(int x = 0; x < ((GridSnappingObject) go).getOccupiedTiles().length; x++) {
 						grid.getTiles()[((GridSnappingObject) go).getOccupiedTiles()[x]].assignContent(i);
+					}
+					
+					if(go instanceof Item) {
+						renderLayer1.addToHandlerArr(i);
+					}else {
+						renderLayer3.addToHandlerArr(i);
 					}
 				}
 				

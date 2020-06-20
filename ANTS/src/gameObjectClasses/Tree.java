@@ -30,9 +30,9 @@ public class Tree extends SolidObject implements Animated{
 		
 		//loading images
 		try {
-			sprites[0] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree1.png"));
-			sprites[1] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree2.png"));
-			sprites[2] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree3.png"));
+			sprites[0] = ImageIO.read(new File("src/TreeSprites/Tree1.png"));
+			sprites[1] = ImageIO.read(new File("src/TreeSprites/Tree2.png"));
+			sprites[2] = ImageIO.read(new File("src/TreeSprites/Tree3.png"));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

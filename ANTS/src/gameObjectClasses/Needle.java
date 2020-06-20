@@ -18,17 +18,16 @@ public class Needle extends Item{
 		setOccupiedTiles(g);
 		
 		//amount of images used
-		sprites = new BufferedImage[3];
+		sprites = new BufferedImage[1];
 		
 		//sets image offset and side ratio
-		setImageScale(18,14); //height width
-		setImageOffset(-5.2, -11.5); // x y
+		setImageScale(10, 10); //height width
+		setImageOffset(0.3,0); // x y
 		
 		//loading images
 		try {
-			sprites[0] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree1.png"));
-			sprites[1] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree2.png"));
-			sprites[2] = ImageIO.read(new File("ANTS/src/TreeSprites/Tree3.png"));
+			sprites[0] = ImageIO.read(new File("src/SmallItems/Needle.png"));
+
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

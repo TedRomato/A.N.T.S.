@@ -77,12 +77,35 @@ public class Camera {
 	
 	public void renderAllObjects(Graphics2D g) {
 		int objectsHandled = 0;
-		for(int i = 0; i < locationObserved.objectsToRender.getArr().length; i++) {
-			if(locationObserved.objectsToRender.getArr()[i] != -1) {
-				locationObserved.objectsInLocation[locationObserved.objectsToRender.getArr()[i]].render(g, this);
+		for(int i = 0; i < locationObserved.renderLayer1.getArr().length; i++) {
+			if(locationObserved.renderLayer1.getArr()[i] != -1) {
+
+				locationObserved.objectsInLocation[locationObserved.renderLayer1.getArr()[i]].render(g, this);
 				objectsHandled++;
-				if(objectsHandled >= locationObserved.objectsToRender.getContents()) {
-					return;
+				if(objectsHandled >= locationObserved.renderLayer1.getContents()) {
+					break;
+				}
+			}
+		}
+		objectsHandled = 0;
+		for(int i = 0; i < locationObserved.renderLayer2.getArr().length; i++) {
+			if(locationObserved.renderLayer2.getArr()[i] != -1) {
+
+				locationObserved.objectsInLocation[locationObserved.renderLayer2.getArr()[i]].render(g, this);
+				objectsHandled++;
+				if(objectsHandled >= locationObserved.renderLayer2.getContents()) {
+					break;
+				}
+			}
+		}
+		objectsHandled = 0;
+		for(int i = 0; i < locationObserved.renderLayer3.getArr().length; i++) {
+			if(locationObserved.renderLayer3.getArr()[i] != -1) {
+
+				locationObserved.objectsInLocation[locationObserved.renderLayer3.getArr()[i]].render(g, this);
+				objectsHandled++;
+				if(objectsHandled >= locationObserved.renderLayer3.getContents()) {
+					break;
 				}
 			}
 		}

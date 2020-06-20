@@ -4,9 +4,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import handlers.Camera;
+import world.Tile;
 
-public class Item extends GridSnappingObject{
-	
+public abstract class Item extends GridSnappingObject{
+
 	enum State{
 		Carried,
 		Laying,
@@ -15,13 +16,16 @@ public class Item extends GridSnappingObject{
 	
 	State currentState = State.Laying;
 	
-	
+	public void pickUp() {
+		currentState = State.Carried;
+
+	}
 	
 	@Override
 	public void render(Graphics2D g, Camera c) {
 		switch(currentState) {
 			case Laying:
-				//render image
+				super.render(g, c);
 				break;
 				
 			case Carried:
