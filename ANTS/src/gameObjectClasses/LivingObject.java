@@ -88,11 +88,9 @@ public abstract class LivingObject extends OffGridObject{
 	}
 	protected void move() {
 		if(moving) {
-			rp.move(velX, velY);
+			super.move(velX, velY);
 			md.move(velX, velY);
-			for(CollisionSquare cs : colliders) {
-				cs.move(velX, velY);
-			}
+			
 		}
 	}
 	

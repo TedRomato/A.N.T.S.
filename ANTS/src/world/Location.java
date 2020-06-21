@@ -17,6 +17,7 @@ import gameObjectClasses.OffGridObject;
 import gameObjectClasses.Tree;
 import handlers.Animated;
 import handlers.ContentArray;
+import handlers.Input.SelectionType;
 import interfacePackage.Game;
 
 //Location is set of gameObjects and grid
@@ -37,6 +38,7 @@ public class Location {
 	public ContentArray renderLayer2;
 	public ContentArray renderLayer3;
 	public ContentArray livingObjects;
+	public ContentArray	items;
 	public ContentArray selectedObjects;
 	Grid grid;
 	boolean isActive = false;
@@ -59,6 +61,7 @@ public class Location {
 		//TODO: Make selected objects array - > make rectangle mouse selection - > only selected ants listen to new commands
 		selectedObjects = new ContentArray(10);
 		livingObjects = new ContentArray(10);
+		items = new ContentArray(10);
 		gridSnappingObjects = new ContentArray(10);
 		animated = new ContentArray(10);
 		renderLayer1 = new ContentArray(10);
@@ -87,6 +90,8 @@ public class Location {
 		updateLivingObjects();
 		selectLivingObjects();
 		handleSelectedObjects();
+
+		
 	}
 	/*
 	private void updateGoalDestination() {
@@ -95,41 +100,103 @@ public class Location {
 	*/
 	
 	private void handleSelectedObjects() {
-		if(Game.input.isRightMousePressed()) {
+		if(Game.input.isRightMousePressed() && 	Game.input.getSelectionType() == SelectionType.SELECT) {
+			
 			int objectsHandled = 0;
 			for(int i = 0; i < selectedObjects.getArr().length; i++) {
 				if(selectedObjects.getArr()[i] != -1) {
 					//TODO predelat do metod - nejak univerzalnejs
+					
 					((LivingObject) objectsInLocation[selectedObjects.getArr()[i]]).setNewGoalDestination(new Point(Game.input.getCursorXOnMap(),Game.input.getCursorYOnMap()));;				
-
+					
+					
+					if(objectsHandled == selectedObjects.getContents()) {
+						return;
+					}
+				}
+			}
+		}else if(Game.input.isLeftMousePressed() && Game.input.getSelectionType() == SelectionType.GRAB) {
+			int objectsHandled = 0;
+			for(int i = 0; i < selectedObjects.getArr().length; i++) {
+				if(selectedObjects.getArr()[i] != -1) {
+					//TODO predelat do metod - nejak univerzalnejs
+					
+					int itemsHandled = 0;
+					for(int x = 0; x < items.getArr().length; x++) {
+						if(items.getArr()[x] != -1) {
+							//TODO predelat do metod - nejak univerzalnejs
+							if(((Item) objectsInLocation[items.getArr()[x]]).checkCollision(new Point(Game.input.getCursorXOnMap(),Game.input.getCursorYOnMap()))) {
+								System.out.println("im in");
+								((Ant) objectsInLocation[selectedObjects.getArr()[i]]).pickUp(((Item) objectsInLocation[items.getArr()[x]]));
+								System.out.println(((Item) objectsInLocation[items.getArr()[x]]).isPickedUp());
+							}
+							
+							
+							
+							if(itemsHandled == selectedObjects.getContents()) {
+								return;
+							}
+						}
+					}
+					
 					if(objectsHandled == selectedObjects.getContents()) {
 						return;
 					}
 				}
 			}
 		}
-	}
-	
-	private void selectLivingObjects() {
-		if(Game.input.isSelectNow()) {
-			selectedObjects.resetAray();
-			Game.input.setSelectNow(false);
-			
-			int objectsHandled = 0;
-			for(int i = 0; i < livingObjects.getArr().length; i++) {
-				if(livingObjects.getArr()[i] != -1) {
-					//TODO predelat do metod - nejak univerzalnejs
-					if(Game.input.checkIfInsideSelectionRect(((LivingObject) objectsInLocation[livingObjects.getArr()[i]]).getColliders()))  {
-						selectedObjects.addToHandlerArr(livingObjects.getArr()[i]);
-					}
-					if(objectsHandled == livingObjects.getContents()) {
-						Game.input.restetSelectionRect();
-						return;
+			else if(Game.input.isLeftMousePressed() && Game.input.getSelectionType() == SelectionType.DROP) {
+				int objectsHandled = 0;
+				for(int i = 0; i < selectedObjects.getArr().length; i++) {
+					if(selectedObjects.getArr()[i] != -1) {
+						//TODO predelat do metod - nejak univerzalnejs
+						
+						((Ant)objectsInLocation[selectedObjects.getArr()[i]]).dropCarriedItem();
+						
+						if(objectsHandled == selectedObjects.getContents()) {
+							return;
+						}
 					}
 				}
-			}
-			Game.input.restetSelectionRect();
+			
+			Game.input.setSelectionType(SelectionType.SELECT);
 		}
+	}	
+	
+	
+	
+	private void selectLivingObjects() {
+		//TODO: udelat ca selected Items
+		if(Game.input.isSelectNow()) {
+			Game.input.setSelectNow(false);
+			if(Game.input.getSelectionType() == SelectionType.SELECT) {
+				for(int i = 0; i < selectedObjects.getArr().length; i++) {
+					if(selectedObjects.getArr()[i] != -1) {
+						//TODO predelat do metod - nejak univerzalnejs
+						((Ant)objectsInLocation[selectedObjects.getArr()[i]]).setIsSelected(false);
+						selectedObjects.getArr()[i] = -1;
+					}
+				}
+				Game.input.setSelectNow(false);
+				
+				int objectsHandled = 0;
+				for(int i = 0; i < livingObjects.getArr().length; i++) {
+					if(livingObjects.getArr()[i] != -1) {
+						//TODO predelat do metod - nejak univerzalnejs
+						if(Game.input.checkIfInsideSelectionRect(((LivingObject) objectsInLocation[livingObjects.getArr()[i]]).getColliders()))  {
+							selectedObjects.addToHandlerArr(livingObjects.getArr()[i]);
+							((Ant)objectsInLocation[livingObjects.getArr()[i]]).setIsSelected(true);
+						}
+						if(objectsHandled == livingObjects.getContents()) {
+							Game.input.restetSelectionRect();
+							return;
+						}
+					}
+				}
+				Game.input.restetSelectionRect();
+			}
+		}
+		
 		
 	}
 	
@@ -169,6 +236,7 @@ public class Location {
 						renderLayer2.addToHandlerArr(i);
 					}else if(go instanceof Item){
 						renderLayer1.addToHandlerArr(i);
+						items.addToHandlerArr(i);
 					}
 				}
 				

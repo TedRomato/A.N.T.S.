@@ -1,5 +1,6 @@
 package gameObjectClasses;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -10,9 +11,13 @@ import javax.imageio.ImageIO;
 
 import handlers.Animated;
 import handlers.Camera;
+import handlers.Carrier;
+import world.Tile;
 
-public class Ant extends LivingObject implements Animated{
+public class Ant extends LivingObject implements Animated, Carrier{
 	int animationTimer = 0;
+	Item carriedItem;
+	boolean isSelected = false;
 
 	public Ant(Point p) {
 		super(p , 1);
@@ -41,10 +46,22 @@ public class Ant extends LivingObject implements Animated{
 		}
 	}
 	
+	public void move() {
+		super.move();
+
+	}
+	
 
 	@Override
-	public void render(Graphics2D g, Camera c) {
-		super.render(g, c);
+	public void render(Graphics2D g, Camera camera) {
+		if(isSelected()) {
+			g.setColor(Color.green);
+			g.drawRect(	(int)((this.getRp().getX()-35)*camera.getTileRenderSize()/Tile.tileSideLenght - camera.getX()), 
+						(int)((this.getRp().getY()-35)*camera.getTileRenderSize()/Tile.tileSideLenght - camera.getY()),
+						(int)(camera.getTileRenderSize()*1.5) - 1, 
+						(int)(camera.getTileRenderSize()*1.5) - 1);
+		}
+		super.render(g, camera);
 		
 	}
 
@@ -72,6 +89,35 @@ public class Ant extends LivingObject implements Animated{
 		
 	}
 
+
+	@Override
+	public void pickUp(Item item) {
+		if(item.checkCollision(this)) {
+			item.pickUp();
+			carriedItem = item;
+		}
+		
+	}
+
+
+	@Override
+	public void dropCarriedItem() {
+		// TODO Auto-generated method stub
+		if(carriedItem != null) {
+			carriedItem.drop(this.getRp());
+			carriedItem = null;
+		}
+		
+	}
+	
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	
+	public void setIsSelected(boolean b) {
+		isSelected = b;
+	}
 	
 
 }

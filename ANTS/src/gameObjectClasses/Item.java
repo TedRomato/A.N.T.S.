@@ -26,6 +26,19 @@ public abstract class Item extends OffGridObject{
 
 	}
 	
+	
+	public void drop(Point whereToDrop) {
+		this.setRp(new Point(whereToDrop.getX(), whereToDrop.getY()));
+		for(CollisionSquare cs : colliders) {
+			cs.setRp(new Point(whereToDrop.getX(), whereToDrop.getY()));
+			cs.setXYToRP();
+		}
+		currentState = State.Laying;
+	}
+	
+	
+
+	
 	@Override
 	public void render(Graphics2D g, Camera c) {
 		switch(currentState) {
@@ -40,6 +53,14 @@ public abstract class Item extends OffGridObject{
 			case BeingUsed:
 				//renderNothing
 				break;
+		}
+	}
+	
+	public boolean isPickedUp() {	
+		if(currentState == State.Carried) {
+			return true;
+		}else {
+			return false;
 		}
 	}
 	

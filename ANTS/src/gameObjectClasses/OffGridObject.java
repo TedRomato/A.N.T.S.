@@ -50,6 +50,18 @@ public abstract class OffGridObject extends GameObject{
 		return false;
 	}
 	
+	public boolean checkCollision(Point p) {
+	
+		for(CollisionSquare th : this.getColliders()) {
+			if(th.checkCollision(p)) {
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	protected void makeMainCollider(double side) {
 		colliders = new CollisionSquare[1];
 		colliders[0] = new CollisionSquare(rp.getX(), rp.getY(), side, rp);
@@ -63,6 +75,13 @@ public abstract class OffGridObject extends GameObject{
 		}
 		colliders[colliders.length - 1] = new CollisionSquare(rp.getX() - offsetX, rp.getY() - offsetY, side, rp);
 		
+	}
+	
+	public void move(double velX, double velY) {
+		rp.move(velX, velY);
+		for(CollisionSquare cs : colliders) {
+			cs.move(velX, velY);
+		}
 	}
 	
 	public Point getRp() {

@@ -47,8 +47,20 @@ public class CollisionSquare {
 				this.getY() > other.getY() + other.getHeight()*Tile.tileSideLenght) {
 			return false;
 		}
-		return true;
+		return true;	
+	}
+	
+	public boolean checkCollision(Point p) {
 		
+		if(p.getX() > this.getX() && p.getX() < this.getX() + this.getWidth()*Tile.tileSideLenght) {
+
+			if(p.getY() > this.getY() && p.getY() < this.getY() + this.getHeight()*Tile.tileSideLenght) {
+				return true;
+			}
+		}
+		System.out.println("false");
+
+		return false;
 	}
 	
 	

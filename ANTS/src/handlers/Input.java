@@ -22,6 +22,9 @@ public class Input {
 	public enum WheelMove{DOWN,NONE,UP};
 	WheelMove move;
 	
+	public enum SelectionType{SELECT, GRAB, ATTACK, DROP}
+	SelectionType selectionType = SelectionType.SELECT;
+	
 	//
 	public boolean checkIfKeyPressed(char key) {
 		for(char chars : pressedChars) {
@@ -78,6 +81,26 @@ public class Input {
 		}
 		if(notches == 0) {
 			move = WheelMove.NONE;
+		}
+	}
+	
+	public void updateInput(Camera c) {
+		updateSelectionType();
+		handleSelectionRect(c);
+	}
+	
+	public void updateSelectionType() {
+		if(checkIfKeyPressed('c')) {
+			selectionType = SelectionType.GRAB;
+		}
+		else if(checkIfKeyPressed('d')) {
+			selectionType = SelectionType.DROP;
+		}
+		else if(checkIfKeyPressed('a')) {
+			selectionType = SelectionType.ATTACK;
+		}
+		if(isRightMousePressed()) {
+			selectionType = SelectionType.SELECT;
 		}
 	}
 	
@@ -204,6 +227,13 @@ public class Input {
 	}
 	public void setSelectNow(boolean selectNow) {
 		this.selectNow = selectNow;
+	}
+	
+	public SelectionType getSelectionType() {
+		return selectionType;
+	}
+	public void setSelectionType(SelectionType st) {
+		selectionType = st;
 	}
 
 	
